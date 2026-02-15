@@ -1,0 +1,61 @@
+# Check Lists Dự Án Lì Xì Tết 2026
+
+## 1. Giai Đoạn Khởi Tạo (Initialization)
+- [ ] Khởi tạo dự án Vite React + TypeScript.
+    - [ ] Clean up code mẫu.
+    - [ ] Cấu hình ESLint/Prettier (nếu cần).
+- [ ] Cài đặt các thư viện cần thiết:
+    - [ ] `@supabase/supabase-js` (Kết nối Database).
+    - [ ] `canvas-confetti` (Hiệu ứng pháo hoa).
+    - [ ] `html2canvas` (Chụp ảnh màn hình để chia sẻ).
+- [ ] Cấu hình biến môi trường (`.env`):
+    - [ ] `VITE_SUPABASE_URL`
+    - [ ] `VITE_SUPABASE_ANON_KEY`
+- [ ] Thiết lập thư mục `assets` (Icons, Sounds, Images).
+
+## 2. Database & Backend (Supabase)
+- [ ] Tạo project trên Supabase dashboard.
+- [ ] Tạo Table `spin_history`:
+    - [ ] Column `id` (uuid, pk).
+    - [ ] Column `ip_address` (text).
+    - [ ] Column `device_info` (text).
+    - [ ] Column `prize` (text).
+    - [ ] Column `created_at` (timestamptz).
+- [ ] Thiết lập RLS (Row Level Security) (Optional: để bảo vệ data nếu cần).
+- [ ] Kiểm tra kết nối từ Frontend tới Supabase thành công.
+
+## 3. Frontend Development
+
+### 3.1. Màn Hình Chờ (Countdown)
+- [ ] Hiển thị đúng đồng hồ đếm ngược tới Giao Thừa/Mồng 1.
+- [ ] Kiểm tra logic chặn quay trước giờ G.
+- [ ] UI đẹp, mang không khí Tết.
+
+### 3.2. Vòng Quay May Mắn (Lucky Wheel)Component
+- [ ] Vẽ được vòng quay với đầy đủ các ô phần thưởng.
+- [ ] Hiển thị đúng tên các giải thưởng (10k, 20k, 50k, 100k, Đặc Biệt).
+- [ ] Logic quay (Animation) mượt mà, dừng đúng ô kết quả.
+- [ ] **Quan trọng**: Logic Random có trọng số (Weighted Random) hoạt động chính xác (Test thử 100 lần xem tỷ lệ).
+
+### 3.3. Xử Lý Kết Quả & Anti-Cheat
+- [ ] Kiểm tra `localStorage`: Nếu đã quay -> Chặn/Ẩn nút quay.
+- [ ] Kiểm tra `Supabase` (IP Check): Nếu IP đã tồn tại -> Thông báo đã hết lượt.
+- [ ] Lưu kết quả quay vào Database sau khi quay xong.
+- [ ] Hiển thị Popup chúc mừng + Số tiền trúng thưởng.
+
+### 3.4. Chia Sẻ & Tương Tác
+- [ ] Button "Hái lộc đầu năm" hoạt động tốt.
+- [ ] Button "?" hiển thị bảng tỷ lệ trúng thưởng.
+- [ ] Chức năng "Chia sẻ" (Chụp màn hình kết quả và tải xuống/share).
+
+### 3.5. UI/UX & Assets
+- [ ] Responsive trên Mobile (iPhone/Android).
+- [ ] Responsive trên Desktop.
+- [ ] Âm thanh quay số và nhạc nền (Có nút tắt/bật âm thanh nếu cần).
+- [ ] Hiệu ứng pháo hoa khi trúng giải.
+
+## 4. Deployment & Verification
+- [ ] Deploy lên Vercel thành công (Build không lỗi).
+- [ ] Environment Variables trên Vercel đã được cấu hình đúng.
+- [ ] Test lại luồng đi từ đầu đến cuối trên môi trường Production (Vercel).
+- [ ] Nhờ bạn bè test thử để check lỗi phát sinh.
