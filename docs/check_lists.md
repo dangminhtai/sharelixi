@@ -14,22 +14,22 @@
 - [x] Thiết lập thư mục `assets` (Icons, Sounds, Images).
 
 ## 2. Database & Backend (Supabase)
-- [ ] Tạo project trên Supabase dashboard.
-- [ ] Tạo Table `spin_history`:
-    - [ ] Column `id` (uuid, pk).
-    - [ ] Column `ip_address` (text).
-    - [ ] Column `device_info` (text).
-    - [ ] Column `prize` (text).
-    - [ ] Column `created_at` (timestamptz).
-- [ ] Thiết lập RLS (Row Level Security) (Optional: để bảo vệ data nếu cần).
-- [ ] Kiểm tra kết nối từ Frontend tới Supabase thành công.
+- [x] Tạo project trên Supabase dashboard.
+- [x] Tạo Table `spin_history`:
+    - [x] Column `id` (uuid, pk).
+    - [x] Column `ip_address` (text).
+    - [x] Column `device_info` (text).
+    - [x] Column `prize` (text).
+    - [x] Column `created_at` (timestamptz).
+- [x] Thiết lập RLS (Row Level Security) (Optional: để bảo vệ data nếu cần).
+- [x] Kiểm tra kết nối từ Frontend tới Supabase thành công.
 
 ## 3. Frontend Development
 
 ### 3.1. Màn Hình Chờ (Countdown)
-- [ ] Hiển thị đúng đồng hồ đếm ngược tới Giao Thừa/Mồng 1.
-- [ ] Kiểm tra logic chặn quay trước giờ G.
-- [ ] UI đẹp, mang không khí Tết.
+- [x] Hiển thị đúng đồng hồ đếm ngược tới Giao Thừa/Mồng 1.
+- [x] Kiểm tra logic chặn quay trước giờ G.
+- [x] UI đẹp, mang không khí Tết.
 
 ### 3.2. Vòng Quay May Mắn (Lucky Wheel)Component
 - [ ] Vẽ được vòng quay với đầy đủ các ô phần thưởng.
@@ -49,7 +49,7 @@
 - [ ] Chức năng "Chia sẻ" (Chụp màn hình kết quả và tải xuống/share).
 
 ### 3.5. UI/UX & Assets
-- [ ] Responsive trên Mobile (iPhone/Android).
+- [x] Responsive trên Mobile (iPhone/Android).
 - [ ] Responsive trên Desktop.
 - [ ] Âm thanh quay số và nhạc nền (Có nút tắt/bật âm thanh nếu cần).
 - [ ] Hiệu ứng pháo hoa khi trúng giải.
