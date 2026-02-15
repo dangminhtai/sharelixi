@@ -1,7 +1,7 @@
 # Danh sách vấn đề (Issue List)
 
 ## 1. Lỗi Import Component trong MainLayout
-**Trạng thái:** 🔴 Open  
+**Trạng thái:**🟢 Resolved
 **Mức độ:** Cao (Ảnh hưởng trực tiếp đến UI)
 
 ### Mô tả vấn đề (Description)
@@ -26,3 +26,14 @@
 2. **Xóa Cache Vite**: Folder `node_modules/.vite` có thể đang lưu cache cũ bị lỗi. Cần xóa đi build lại.
 3. **Cấu hình Alias**: Thiết lập alias `@/components/...` trong `vite.config.ts` để import tường minh hơn, tránh lỗi relative path.
 4. **Index Barrel**: Tạo file `index.ts` trong thư mục `layout` để export gom nhóm.
+
+## 2. Lỗi Property 'name' và Type Mismatch trong LuckyWheel
+**Trạng thái:** 🟢 Resolved
+**Mức độ:** Trung bình
+
+### Mô tả vấn đề (Description)
+- `Property 'name' does not exist on type 'WheelPrize'`: Interface mới dùng `label` nhưng code cũ dùng `name`.
+- `Type '{}' is missing propertes from LuckyWheelProps`: `App.tsx` truyền props cũ nhưng logic mới đã bỏ props.
+
+### Giải pháp (Actions Taken)
+- Force overwrite `LuckyWheel.tsx` bằng code từ template `lixi2027` (dùng CSS conic-gradient) để đồng bộ hoàn toàn với `random.ts` và `App.tsx`.
