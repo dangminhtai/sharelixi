@@ -36,4 +36,19 @@
 - `Type '{}' is missing propertes from LuckyWheelProps`: `App.tsx` truyền props cũ nhưng logic mới đã bỏ props.
 
 ### Giải pháp (Actions Taken)
-- Force overwrite `LuckyWheel.tsx` bằng code từ template `lixi2027` (dùng CSS conic-gradient) để đồng bộ hoàn toàn với `random.ts` và `App.tsx`.
+- Force overwrite `LuckyWheel.tsx` bằng code từ template `lixi2027` (dùng CSS conic-gradient) để đồng bộ hoàn toàn với `random.ts` và `App.tsx`
+
+## 3. Lỗi Test Mode Không Hoạt Động
+**Trạng thái:** 🔴 Open -> 🟡 In Progress
+**Mức độ:** Cao (Admin không thể test)
+
+### Mô tả vấn đề (Description)
+- Thêm tham số `?test=1` vào URL nhưng vẫn bị chặn bởi Anti-Cheat (`hasSpun` check).
+- UI đã hiện badge `DEV MODE` nhưng nút quay vẫn không hoạt động.
+
+### Nguyên nhân (Root Cause)
+- Hàm `spinWheel` có dòng check `if (isSpinning || hasSpun || isChecking) return;` chặn ngay từ đầu, chưa check điều kiện `isTestMode`.
+
+### Giải pháp (Proposed Solution)
+- Cập nhật logic `spinWheel`: Check `isTestMode` trước, nếu `true` thì bỏ qua các check `hasSpun` và `isChecking`.
+- Cập nhật disable logic của button để cho phép click khi `isTestMode = true`.

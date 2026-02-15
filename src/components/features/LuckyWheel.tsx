@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '../ui/Card';
 import { WHEEL_PRIZES, NEW_YEAR_WISHES } from '../../utils/random';
 import type { SpinResult, WheelPrize } from '../../utils/random';
 import confetti from 'canvas-confetti';
 import { HelpCircle, X, ChevronRight, Share2, CheckCircle2, Lock } from 'lucide-react';
+import { SpinService } from '../../services/spinService';
 
 export const LuckyWheel: React.FC = () => {
     const [showRules, setShowRules] = useState(false);
@@ -12,12 +13,58 @@ export const LuckyWheel: React.FC = () => {
     const [showResultModal, setShowResultModal] = useState(false); // State hiện popup kết quả
     const [rotation, setRotation] = useState(0);
     const [result, setResult] = useState<SpinResult | null>(null);
+    const [userIP, setUserIP] = useState<string | null>(null);
+    const [isChecking, setIsChecking] = useState(true);
+
+    // 1. Check LocalStorage & IP khi load trang
+    useEffect(() => {
+        const checkEligibility = async () => {
+            const isTestMode = new URLSearchParams(window.location.search).get('test') === '1';
+
+            // Nếu đang test mode
+            if (isTestMode) {
+                setIsChecking(false);
+                return;
+            }
+
+            setIsChecking(true);
+
+            // Check LocalStorage trước (Nhanh nhất)
+            const savedResult = localStorage.getItem('lixi2026_result');
+            if (savedResult) {
+                setHasSpun(true);
+                setResult(JSON.parse(savedResult));
+                setIsChecking(false);
+                return;
+            }
+
+            // Check IP qua Supabase (Chậm hơn chút)
+            const ip = await SpinService.getUserIP();
+            if (ip) {
+                setUserIP(ip);
+                const canSpin = await SpinService.checkCanSpin(ip);
+                if (!canSpin) {
+                    setHasSpun(true);
+                    // Có thể hiển thị thông báo "Bạn đã quay trên thiết bị này rồi" nếu muốn
+                }
+            }
+            setIsChecking(false);
+        };
+
+        checkEligibility();
+    }, []);
 
     // Tính toán số segment
     const segmentAngle = 360 / WHEEL_PRIZES.length;
 
-    const spinWheel = () => {
-        if (isSpinning || hasSpun) return;
+    const spinWheel = async () => {
+        const isTestMode = new URLSearchParams(window.location.search).get('test') === '1';
+
+        // Nếu KHÔNG phải test mode thì mới check các điều kiện chặn
+        if (!isTestMode && (isSpinning || hasSpun || isChecking)) return;
+
+        // Nếu đang test mode mà đang quay thì cũng chặn để tránh spam nút
+        if (isTestMode && isSpinning) return;
 
         setIsSpinning(true);
         setShowResultModal(false);
@@ -46,14 +93,30 @@ export const LuckyWheel: React.FC = () => {
         setRotation(newRotation);
 
         // 3. Xử lý kết quả sau khi quay xong (3s)
-        setTimeout(() => {
+        setTimeout(async () => {
             setIsSpinning(false);
             setHasSpun(true); // Đánh dấu đã quay rồi
-            handleResult(selectedPrize);
+            const finalResult = handleResult(selectedPrize);
+
+            // 4. Lưu kết quả (Anti-Cheat) - Chỉ lưu nếu KHÔNG phải test mode
+            if (!isTestMode) {
+                // A. LocalStorage
+                localStorage.setItem('lixi2026_result', JSON.stringify(finalResult));
+
+                // B. Supabase
+                if (userIP) {
+                    await SpinService.saveSpinResult({
+                        ip_address: userIP,
+                        device_info: navigator.userAgent,
+                        prize: selectedPrize.label,
+                        prize_value: finalResult.finalValue
+                    });
+                }
+            }
         }, 3000);
     };
 
-    const handleResult = (prize: WheelPrize) => {
+    const handleResult = (prize: WheelPrize): SpinResult => {
         let finalValue = 0;
         let message = "";
 
@@ -67,7 +130,8 @@ export const LuckyWheel: React.FC = () => {
             message = "Lộc đầu xuân, cả năm may mắn!";
         }
 
-        setResult({ prize, finalValue, message });
+        const newResult = { prize, finalValue, message };
+        setResult(newResult);
         setShowResultModal(true); // Hiện popup
 
         // Bắn pháo hoa
@@ -88,6 +152,8 @@ export const LuckyWheel: React.FC = () => {
             confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
             confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
         }, 250);
+
+        return newResult;
     };
 
     const handleShare = () => {
@@ -168,21 +234,32 @@ export const LuckyWheel: React.FC = () => {
 
                 {/* === PHẦN 2: NÚT BẤM (DƯỚI CÙNG) === */}
                 <div className="w-full max-w-xs px-4">
+                    {/* Test Mode Indicator */}
+                    {new URLSearchParams(window.location.search).get('test') === '1' && (
+                        <div className="text-center mb-2">
+                            <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse border border-yellow-400">
+                                🐜 DEV MODE: NO LIMIT
+                            </span>
+                        </div>
+                    )}
+
                     <button
                         onClick={spinWheel}
-                        disabled={isSpinning || hasSpun}
+                        disabled={isSpinning || (hasSpun && new URLSearchParams(window.location.search).get('test') !== '1') || isChecking}
                         className={`
               w-full group relative h-16 rounded-2xl font-black text-xl uppercase tracking-wider shadow-xl transition-all transform
-              ${isSpinning || hasSpun
+              ${isSpinning || (hasSpun && new URLSearchParams(window.location.search).get('test') !== '1') || isChecking
                                 ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
                                 : 'bg-gradient-to-b from-yellow-400 to-yellow-600 text-red-900 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,215,0,0.5)] active:scale-95'
                             }
             `}
                     >
                         <span className="relative z-10 flex items-center justify-center gap-2">
-                            {isSpinning ? (
+                            {isChecking ? (
+                                <>Đang kiểm tra...</>
+                            ) : isSpinning ? (
                                 <>Đang quay...</>
-                            ) : hasSpun ? (
+                            ) : hasSpun && new URLSearchParams(window.location.search).get('test') !== '1' ? (
                                 <>
                                     <Lock className="w-5 h-5" /> Đã Nhận Lộc
                                 </>
@@ -193,10 +270,18 @@ export const LuckyWheel: React.FC = () => {
                             )}
                         </span>
                     </button>
-                    {hasSpun && (
-                        <p className="text-center text-[10px] text-gray-400 mt-2 italic">
-                            *Mỗi người chỉ được quay 1 lần (Admin nghèo lắm).
-                        </p>
+                    {hasSpun && new URLSearchParams(window.location.search).get('test') !== '1' && (
+                        <div className="flex flex-col gap-2 mt-4">
+                            <p className="text-center text-[10px] text-gray-400 italic">
+                                *Mỗi người chỉ được quay 1 lần (Admin nghèo lắm).
+                            </p>
+                            <button
+                                onClick={() => setShowResultModal(true)}
+                                className="text-tet-gold text-sm underline hover:text-white transition-colors"
+                            >
+                                Xem lại kết quả
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
@@ -204,9 +289,13 @@ export const LuckyWheel: React.FC = () => {
             {/* === MODAL KẾT QUẢ (POPUP) === */}
             {showResultModal && result && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-300">
-                    <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setShowResultModal(false)}></div>
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowResultModal(false)}></div>
 
-                    <div className="relative w-full max-w-md bg-gradient-to-b from-red-800 to-tet-dark border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] overflow-visible">
+                    <div className="relative w-full max-w-md bg-gradient-to-br from-red-600/90 to-tet-dark/90 border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-md overflow-visible">
+
+                        {/* Trang trí background */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>
 
                         {/* Pháo hoa trang trí góc */}
                         <div className="absolute -top-10 -left-10 text-6xl animate-bounce delay-100">🧨</div>
