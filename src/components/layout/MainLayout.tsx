@@ -8,7 +8,7 @@ interface MainLayoutProps {
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center overflow-hidden relative">
+        <div className="min-h-screen flex flex-col relative overflow-x-hidden">
             {/* Background Bubbles from Template */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-tet-red rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-pulse-slow"></div>
@@ -16,7 +16,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </div>
 
             <Header />
-            <main className="flex-1 w-full flex flex-col items-center justify-center z-10 relative overflow-y-auto overflow-x-hidden pt-20 pb-16">
+            <main className="flex-1 w-full flex flex-col items-center justify-start z-10 relative pt-24 pb-16 px-4">
                 {children}
             </main>
             <Footer />

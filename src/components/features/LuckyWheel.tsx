@@ -115,9 +115,9 @@ export const LuckyWheel: React.FC = () => {
                 </h3>
                 <button
                     onClick={() => setShowRules(true)}
-                    className="flex items-center gap-1 text-xs md:text-sm text-gray-300 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-full transition-all border border-white/20"
+                    className="flex items-center gap-1 text-sm text-gray-300 hover:text-white hover:bg-white/10 px-4 py-2 rounded-full transition-all border border-white/20 active:scale-95 touch-manipulation"
                 >
-                    <HelpCircle className="w-4 h-4" />
+                    <HelpCircle className="w-5 h-5" />
                     <span>Tỷ lệ trúng</span>
                 </button>
             </div>
@@ -125,13 +125,13 @@ export const LuckyWheel: React.FC = () => {
             <div className="flex flex-col items-center gap-8">
 
                 {/* === PHẦN 1: VÒNG QUAY (TRÊN) === */}
-                <div className="relative w-[300px] h-[300px] md:w-[350px] md:h-[350px] flex-shrink-0 group mx-auto">
+                <div className="relative w-[85vw] h-[85vw] max-w-[300px] max-h-[300px] md:max-w-[350px] md:max-h-[350px] flex-shrink-0 group mx-auto">
                     {/* Kim chỉ */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-20 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-white drop-shadow-xl filter drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]"></div>
 
                     {/* Vòng quay */}
                     <div
-                        className={`w-full h-full rounded-full border-[6px] border-tet-gold shadow-[0_0_30px_rgba(255,215,0,0.2)] relative overflow-hidden transition-transform duration-[3000ms] cubic-bezier(0.25, 0.1, 0.25, 1) ${hasSpun ? 'opacity-80 grayscale-[30%]' : ''}`}
+                        className={`w-full h-full rounded-full border-[6px] border-tet-gold shadow-[0_0_30px_rgba(255,215,0,0.2)] relative overflow-hidden transition-transform duration-[3000ms] cubic-bezier(0.25, 0.1, 0.25, 1) ${hasSpun ? 'opacity-80 grayscale-[30%]' : 'hover:scale-[1.02] duration-300'}`}
                         style={{
                             transform: `rotate(${rotation}deg)`,
                             background: `conic-gradient(
