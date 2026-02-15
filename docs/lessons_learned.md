@@ -34,3 +34,13 @@ export const doSomething = () => {
   const ai = new SDK(process.env.KEY); // <--- Safe
   ai.run();
 }
+
+## 2. Commit đúng trên github
+    Mỗi khi làm xong 1 tính năng thì nên commit và push lên github để tránh mất code
+    Làm theo step sau:
+    ```bash
+    git add .
+    git commit -m "Tên tính năng"
+    git push origin main
+    ```
+    Chú ý không commit file .env và các file quan trọng, xem file .gitignore để biết thêm chi tiết (hoặc tạo mới thêm nếu chưa có)

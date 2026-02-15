@@ -1,17 +1,17 @@
 # Check Lists Dự Án Lì Xì Tết 2026
 
 ## 1. Giai Đoạn Khởi Tạo (Initialization)
-- [ ] Khởi tạo dự án Vite React + TypeScript.
-    - [ ] Clean up code mẫu.
-    - [ ] Cấu hình ESLint/Prettier (nếu cần).
-- [ ] Cài đặt các thư viện cần thiết:
-    - [ ] `@supabase/supabase-js` (Kết nối Database).
-    - [ ] `canvas-confetti` (Hiệu ứng pháo hoa).
-    - [ ] `html2canvas` (Chụp ảnh màn hình để chia sẻ).
-- [ ] Cấu hình biến môi trường (`.env`):
-    - [ ] `VITE_SUPABASE_URL`
-    - [ ] `VITE_SUPABASE_ANON_KEY`
-- [ ] Thiết lập thư mục `assets` (Icons, Sounds, Images).
+- [x] Khởi tạo dự án Vite React + TypeScript.
+    - [x] Clean up code mẫu.
+    - [x] Cấu hình ESLint/Prettier (nếu cần).
+- [x] Cài đặt các thư viện cần thiết:
+    - [x] `@supabase/supabase-js` (Kết nối Database).
+    - [x] `canvas-confetti` (Hiệu ứng pháo hoa).
+    - [x] `html2canvas` (Chụp ảnh màn hình để chia sẻ).
+- [x] Cấu hình biến môi trường (`.env`):
+    - [x] `VITE_SUPABASE_URL`
+    - [x] `VITE_SUPABASE_ANON_KEY`
+- [x] Thiết lập thư mục `assets` (Icons, Sounds, Images).
 
 ## 2. Database & Backend (Supabase)
 - [ ] Tạo project trên Supabase dashboard.
