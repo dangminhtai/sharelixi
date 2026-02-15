@@ -32,10 +32,10 @@
 - [x] UI đẹp, mang không khí Tết.
 
 ### 3.2. Vòng Quay May Mắn (Lucky Wheel)Component
-- [ ] Vẽ được vòng quay với đầy đủ các ô phần thưởng.
-- [ ] Hiển thị đúng tên các giải thưởng (10k, 20k, 50k, 100k, Đặc Biệt).
-- [ ] Logic quay (Animation) mượt mà, dừng đúng ô kết quả.
-- [ ] **Quan trọng**: Logic Random có trọng số (Weighted Random) hoạt động chính xác (Test thử 100 lần xem tỷ lệ).
+- [x] Vẽ được vòng quay với đầy đủ các ô phần thưởng.
+- [x] Hiển thị đúng tên các giải thưởng (10k, 20k, 50k, 100k, Đặc Biệt).
+- [x] Logic quay (Animation) mượt mà, dừng đúng ô kết quả.
+- [x] **Quan trọng**: Logic Random có trọng số (Weighted Random) hoạt động chính xác (Test thử 100 lần xem tỷ lệ).
 
 ### 3.3. Xử Lý Kết Quả & Anti-Cheat
 - [ ] Kiểm tra `localStorage`: Nếu đã quay -> Chặn/Ẩn nút quay.

@@ -1,42 +1,75 @@
-@keyframes fall {
-  0% {
-    transform: translateY(0) rotate(0deg) translateX(0);
+@import "tailwindcss";
+
+@theme {
+  --color-tet-red: #D00000;
+  --color-tet-gold: #FFD700;
+  --color-tet-dark: #8B0000;
+  --color-tet-cream: #FFFDD0;
+
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-fade-in-up: fadeInUp 0.5s ease-out forwards;
+  --animate-bounce-in: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
-  100% {
-    transform: translateY(110vh) rotate(360deg) translateX(20px);
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+
+    50% {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    70% {
+      transform: scale(0.9);
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 }
 
-.animate-fall {
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+@layer base {
+  body {
+    @apply bg-tet-dark text-tet-cream overflow-hidden;
+    background-image: radial-gradient(var(--color-tet-red) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
 }
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #d12020;
-  /* Red festive background */
-  color: #fbff00;
-  /* Yellow text */
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Custom Utilities */
+.text-stroke-gold {
+  -webkit-text-stroke: 1px #FFD700;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
+.text-stroke-white {
+  -webkit-text-stroke: 1px white;
 }
