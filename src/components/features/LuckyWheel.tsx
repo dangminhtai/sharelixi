@@ -265,53 +265,59 @@ export const LuckyWheel: React.FC = () => {
             )}
 
             {/* Modal Luật Chơi */}
+            {/* Modal Luật Chơi */}
             {showRules && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-                    <div className="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl" onClick={() => setShowRules(false)}></div>
-                    <div className="relative bg-tet-dark border border-tet-gold p-6 rounded-xl w-full max-w-md shadow-2xl overflow-hidden">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-2xl" onClick={() => setShowRules(false)}></div>
+                    <div className="relative bg-gradient-to-br from-red-600 to-tet-dark border-2 border-tet-gold p-6 rounded-xl w-full max-w-md shadow-[0_0_50px_rgba(255,215,0,0.3)] overflow-hidden">
+
+                        {/* Trang trí */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>
+                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>
+
                         <div className="flex justify-between items-center mb-6">
-                            <h4 className="text-xl font-bold text-tet-gold flex items-center gap-2">
-                                <HelpCircle className="w-5 h-5" /> Cơ Cấu Giải Thưởng
+                            <h4 className="text-xl font-bold text-yellow-300 flex items-center gap-2 drop-shadow-md">
+                                <HelpCircle className="w-6 h-6 text-tet-gold" /> Cơ Cấu Giải Thưởng
                             </h4>
-                            <button onClick={() => setShowRules(false)} className="text-gray-400 hover:text-white p-1 hover:bg-white/10 rounded-full transition-colors">
+                            <button onClick={() => setShowRules(false)} className="text-yellow-200 hover:text-white p-1 hover:bg-white/10 rounded-full transition-colors">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
-                        <div className="overflow-hidden rounded-lg border border-white/10 bg-black/20">
+                        <div className="overflow-hidden rounded-lg border border-yellow-500/30 bg-black/20 backdrop-blur-sm">
                             <table className="w-full text-xs md:text-sm text-left">
-                                <thead className="bg-red-900/50 text-yellow-200">
+                                <thead className="bg-gradient-to-r from-yellow-600 to-yellow-500 text-red-900 shadow-md">
                                     <tr>
-                                        <th className="p-3">Phần thưởng</th>
-                                        <th className="p-3 text-center">Tỷ lệ</th>
-                                        <th className="p-3 text-right">Ghi chú</th>
+                                        <th className="p-3 font-bold border-b border-yellow-700/20">Phần thưởng</th>
+                                        <th className="p-3 text-center font-bold border-b border-yellow-700/20">Tỷ lệ</th>
+                                        <th className="p-3 text-right font-bold border-b border-yellow-700/20">Ghi chú</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-white/5 text-gray-200">
-                                    <tr className="hover:bg-white/5">
-                                        <td className="p-3 font-bold text-yellow-100">10.000 VNĐ</td>
-                                        <td className="p-3 text-center">19.1%</td>
-                                        <td className="p-3 text-right text-gray-400"></td>
+                                <tbody className="divide-y divide-yellow-500/10 text-yellow-100">
+                                    <tr className="hover:bg-white/5 transition-colors">
+                                        <td className="p-3 font-medium">10.000 VNĐ</td>
+                                        <td className="p-3 text-center opacity-80">19.1%</td>
+                                        <td className="p-3 text-right text-yellow-200/60 font-light italic"></td>
                                     </tr>
-                                    <tr className="hover:bg-white/5">
-                                        <td className="p-3 font-bold text-yellow-100">20.000 VNĐ</td>
-                                        <td className="p-3 text-center">45.2%</td>
-                                        <td className="p-3 text-right text-gray-400">Dễ trúng</td>
+                                    <tr className="hover:bg-white/5 transition-colors">
+                                        <td className="p-3 font-medium">20.000 VNĐ</td>
+                                        <td className="p-3 text-center opacity-80">45.2%</td>
+                                        <td className="p-3 text-right text-yellow-200/60 font-light italic">Dễ trúng</td>
                                     </tr>
-                                    <tr className="hover:bg-white/5">
-                                        <td className="p-3 font-bold text-yellow-100">50.000 VNĐ</td>
-                                        <td className="p-3 text-center">15.3%</td>
-                                        <td className="p-3 text-right text-gray-400"></td>
+                                    <tr className="hover:bg-white/5 transition-colors">
+                                        <td className="p-3 font-medium">50.000 VNĐ</td>
+                                        <td className="p-3 text-center opacity-80">15.3%</td>
+                                        <td className="p-3 text-right text-yellow-200/60 font-light italic"></td>
                                     </tr>
-                                    <tr className="bg-red-900/20 hover:bg-red-900/30">
-                                        <td className="p-3 font-bold text-red-400">100.000 VNĐ</td>
-                                        <td className="p-3 text-center text-red-400 font-bold">0.4%</td>
-                                        <td className="p-3 text-right text-red-400 font-medium">Siêu hiếm</td>
+                                    <tr className="bg-red-500/20 hover:bg-red-500/30 transition-colors">
+                                        <td className="p-3 font-bold text-white drop-shadow-sm">100.000 VNĐ</td>
+                                        <td className="p-3 text-center text-white font-bold">0.4%</td>
+                                        <td className="p-3 text-right text-yellow-300 font-medium">Siêu hiếm</td>
                                     </tr>
-                                    <tr className="bg-purple-900/20 hover:bg-purple-900/30">
-                                        <td className="p-3 font-bold text-purple-400">ĐẶC BIỆT</td>
-                                        <td className="p-3 text-center font-bold text-purple-400">20.0%</td>
-                                        <td className="p-3 text-right text-[10px] leading-tight text-gray-400 max-w-[100px] ml-auto">
+                                    <tr className="bg-purple-900/40 hover:bg-purple-900/50 transition-colors border-t border-purple-500/30">
+                                        <td className="p-3 font-black text-purple-200 text-shadow-sm">ĐẶC BIỆT</td>
+                                        <td className="p-3 text-center font-bold text-purple-200">20.0%</td>
+                                        <td className="p-3 text-right text-[10px] leading-tight text-gray-300 max-w-[100px] ml-auto">
                                             20k-30k + Lời chúc
                                         </td>
                                     </tr>

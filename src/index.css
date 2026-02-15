@@ -1,10 +1,33 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Tomorrow';
+  src: url('./assets/fonts/Tomorrow/Tomorrow-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Tomorrow';
+  src: url('./assets/fonts/Tomorrow/Tomorrow-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Tomorrow';
+  src: url('./assets/fonts/Tomorrow/Tomorrow-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 @theme {
   --color-tet-red: #D00000;
   --color-tet-gold: #FFD700;
   --color-tet-dark: #8B0000;
   --color-tet-cream: #FFFDD0;
+
+  --font-tomorrow: 'Tomorrow', sans-serif;
 
   --animate-float: float 3s ease-in-out infinite;
   --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;

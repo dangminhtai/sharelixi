@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { Button } from '@/components/ui/Button';
 import { Countdown } from '@/components/features/Countdown';
 import { LuckyWheel } from '@/components/features/LuckyWheel';
 
@@ -14,10 +13,10 @@ function App() {
     <MainLayout>
       <div className="text-center w-full max-w-4xl mx-auto z-10">
         <div className="mb-10 animate-fade-in-up">
-          <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight text-white drop-shadow-2xl">
+          <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight text-white drop-shadow-2xl font-tomorrow">
             Tết Bính Ngọ <span className="text-tet-gold">2026</span>
           </h1>
-          <p className="text-lg md:text-xl text-yellow-100 max-w-2xl mx-auto opacity-90">
+          <p className="text-lg md:text-xl text-yellow-100 max-w-2xl mx-auto opacity-90 font-tomorrow">
             Trang web nhận lì xì online uy tín nhất hệ mặt trời (vào năm 2026).
             <br />
             Đừng để nước đến chân mới nhảy, hãy xí chỗ ngay hôm nay!
