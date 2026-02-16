@@ -16,39 +16,25 @@ export const FloatingComments: React.FC = () => {
             {COMMENTS.map((comment, index) => (
                 <div
                     key={index}
-                    className="absolute bg-white/95 text-gray-800 px-4 py-2 md:px-6 md:py-3 rounded-full shadow-2xl flex items-center gap-3 animate-float border-2 border-white/50 backdrop-blur-sm cursor-default select-none hover:scale-110 transition-transform duration-300 hidden md:flex"
+                    // Removed 'hidden' and 'md:flex'. Added pointer-events-auto to ensure interactivity check (hover) implies visibility.
+                    // Added 'flex' to always show.
+                    className="absolute bg-white/95 text-gray-800 px-3 py-1.5 md:px-6 md:py-3 rounded-full shadow-2xl flex items-center gap-2 md:gap-3 animate-float border border-white/50 backdrop-blur-sm cursor-default select-none hover:scale-110 transition-transform duration-300"
                     style={{
                         top: comment.top,
                         left: comment.left,
                         right: comment.right,
                         bottom: comment.bottom,
+                        zIndex: 9999,
                         animationDelay: `${index * 1.5}s`,
                         animationDuration: '6s'
                     }}
                 >
-                    <span className="text-xl md:text-2xl drop-shadow-sm">{comment.icon}</span>
-                    <span className="text-xs md:text-sm font-bold tracking-wide text-gray-700 whitespace-nowrap">
+                    <span className="text-lg md:text-2xl drop-shadow-sm">{comment.icon}</span>
+                    <span className="text-[10px] md:text-sm font-bold tracking-wide text-gray-700 whitespace-nowrap">
                         {comment.text}
                     </span>
                 </div>
             ))}
-
-            {/* Mobile Specific Comments (Hardcoded for safety) */}
-            <div
-                className="md:hidden absolute bg-white/95 text-gray-800 px-3 py-1.5 rounded-full shadow-md flex items-center gap-2 animate-float border border-white/50 backdrop-blur-sm"
-                style={{ top: '15%', left: '5%', zIndex: 9999, animationDelay: '0s' }}
-            >
-                <span>😆</span>
-                <span className="font-bold text-[10px]">Dễ thương xỉu!</span>
-            </div>
-
-            <div
-                className="md:hidden absolute bg-white/95 text-gray-800 px-3 py-1.5 rounded-full shadow-md flex items-center gap-2 animate-float border border-white/50 backdrop-blur-sm"
-                style={{ top: '20%', right: '5%', zIndex: 9999, animationDelay: '2s' }}
-            >
-                <span>🧧</span>
-                <span className="font-bold text-[10px]">Lì xì lấy may</span>
-            </div>
         </div>
     );
 };
