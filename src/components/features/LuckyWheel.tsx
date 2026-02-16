@@ -22,6 +22,8 @@ export const LuckyWheel: React.FC = () => {
     const [result, setResult] = useState<SpinResult | null>(null);
     const [userIP, setUserIP] = useState<string | null>(null);
     const [isChecking, setIsChecking] = useState(true);
+    const [mouseWheelPos, setMouseWheelPos] = useState({ x: 50, y: 50 });
+    const wheelContainerRef = useRef<HTMLDivElement>(null);
 
     // Share Modal State
     const [showShareModal, setShowShareModal] = useState(false);
@@ -143,6 +145,11 @@ export const LuckyWheel: React.FC = () => {
             playTick(20); // Start fast (20ms)
         }
 
+        // Play a quick initial click sound
+        if (soundEnabled && sounds.current) {
+            sounds.current.tick.play();
+        }
+
         // 1. Tính toán giải thưởng dựa trên tỷ lệ
         const random = Math.random() * 100;
         let currentProb = 0;
@@ -197,6 +204,15 @@ export const LuckyWheel: React.FC = () => {
             // Play Win Sound
             if (soundEnabled && sounds.current) {
                 sounds.current.win.play();
+            }
+
+            // Haptic Feedback (Mobile)
+            if ('vibrate' in navigator) {
+                if (selectedPrize.value === 'SPECIAL' || (typeof selectedPrize.value === 'number' && selectedPrize.value >= 50000)) {
+                    navigator.vibrate([100, 50, 100, 50, 200]); // Special/Big win pattern
+                } else {
+                    navigator.vibrate(100); // Normal pulse
+                }
             }
 
             const finalResult = handleResult(selectedPrize);
@@ -298,7 +314,25 @@ export const LuckyWheel: React.FC = () => {
             <div className="flex flex-col items-center gap-8">
 
                 {/* === PHẦN 1: VÒNG QUAY (TRÊN) === */}
-                <div className="relative w-[85vw] h-[85vw] max-w-[300px] max-h-[300px] md:max-w-[350px] md:max-h-[350px] flex-shrink-0 group mx-auto">
+                <div
+                    ref={wheelContainerRef}
+                    onMouseMove={(e) => {
+                        if (!wheelContainerRef.current) return;
+                        const rect = wheelContainerRef.current.getBoundingClientRect();
+                        const x = ((e.clientX - rect.left) / rect.width) * 100;
+                        const y = ((e.clientY - rect.top) / rect.height) * 100;
+                        setMouseWheelPos({ x, y });
+                    }}
+                    className="relative w-[85vw] h-[85vw] max-w-[300px] max-h-[300px] md:max-w-[350px] md:max-h-[350px] flex-shrink-0 group mx-auto"
+                >
+                    {/* Glow effect on hover */}
+                    <div
+                        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
+                        style={{
+                            background: `radial-gradient(circle at ${mouseWheelPos.x}% ${mouseWheelPos.y}%, rgba(255, 215, 0, 0.3) 0%, transparent 60%)`
+                        }}
+                    ></div>
+
                     {/* Kim chỉ */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-20 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-white drop-shadow-xl filter drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]"></div>
 
@@ -358,10 +392,14 @@ export const LuckyWheel: React.FC = () => {
               w-full group relative h-16 rounded-2xl font-black text-xl uppercase tracking-wider shadow-xl transition-all transform
               ${isSpinning || (hasSpun && new URLSearchParams(window.location.search).get('test') !== '1') || isChecking
                                 ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
-                                : 'bg-gradient-to-b from-yellow-400 to-yellow-600 text-red-900 hover:scale-105 hover:shadow-[0_0_25px_rgba(255,215,0,0.5)] active:scale-95'
+                                : 'bg-gradient-to-b from-yellow-400 to-yellow-600 text-red-900 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,215,0,0.6)] active:scale-90 active:shadow-inner'
                             }
             `}
                     >
+                        {/* Nhấn lún effect (inner shadow) */}
+                        {!isSpinning && !hasSpun && (
+                            <div className="absolute inset-0 rounded-2xl opacity-0 active:opacity-100 bg-black/10 transition-opacity pointer-events-none"></div>
+                        )}
                         <span className="relative z-10 flex items-center justify-center gap-2">
                             {isChecking ? (
                                 <>Đang kiểm tra...</>
@@ -402,9 +440,9 @@ export const LuckyWheel: React.FC = () => {
                     <div
                         id="lucky-result-card"
                         ref={resultRef}
-                        className="relative w-full max-w-md border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-md overflow-visible"
+                        className="relative w-full max-w-md border border-white/20 rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-2xl overflow-visible"
                         style={{
-                            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(69, 10, 10, 0.95))' // Explicit RGBA for html2canvas compatibility
+                            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.8), rgba(69, 10, 10, 0.8)), linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.05) 45%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 55%, transparent 60%)'
                         }}
                     >
 
@@ -480,8 +518,10 @@ export const LuckyWheel: React.FC = () => {
             {/* Modal Luật Chơi */}
             {showRules && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-2xl" onClick={() => setShowRules(false)}></div>
-                    <div className="relative bg-gradient-to-br from-red-600 to-tet-dark border-2 border-tet-gold p-6 rounded-xl w-full max-w-md shadow-[0_0_50px_rgba(255,215,0,0.3)] overflow-hidden">
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-xl rounded-2xl" onClick={() => setShowRules(false)}></div>
+                    <div className="relative bg-gradient-to-br from-red-600/80 to-tet-dark/80 border border-white/20 p-6 rounded-xl w-full max-w-md shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-2xl overflow-hidden">
+                        {/* Refraction Effect Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
 
                         {/* Trang trí */}
                         <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>

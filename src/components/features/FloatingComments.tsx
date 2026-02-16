@@ -66,7 +66,13 @@ export const FloatingComments: React.FC = () => {
     if (isSpinning) return null;
 
     return (
-        <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-3 items-end pointer-events-none max-w-[300px]">
+        <div
+            className="fixed bottom-20 right-4 z-50 flex flex-col gap-3 items-end pointer-events-none max-w-[300px]"
+            style={{
+                bottom: 'calc(80px + env(safe-area-inset-bottom))',
+                right: 'calc(16px + env(safe-area-inset-right))'
+            }}
+        >
             {COMMENTS_DATA.map((comment) => (
                 visibleComments.includes(comment.id) && (
                     <div
