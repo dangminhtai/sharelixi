@@ -102,7 +102,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data })
                     </button>
 
                     {/* Download Image */}
-                    <button onClick={onDownloadImage} className="flex flex-col items-center gap-2 group">
+                    {/* Download Image */}
+                    <button onClick={() => alert("Tính năng đang được phát triển")} className="flex flex-col items-center gap-2 group">
                         <div className="w-12 h-12 rounded-full bg-yellow-600 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                             <Download className="w-5 h-5" />
                         </div>
