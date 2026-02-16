@@ -18,42 +18,36 @@ export const TetBackground: React.FC = () => {
                 <div className="absolute bottom-4 right-4 w-1 h-1 bg-tet-gold rounded-full opacity-50"></div>
             </div>
 
-            {/* 2. Dây treo trang trí (Trên xuống) */}
-            <div className="absolute top-0 left-0 w-full h-1/3 flex justify-around px-10 opacity-60">
-                {/* Dây 1 */}
-                <div className="hidden md:flex flex-col items-center h-40 animate-sway origin-top" style={{ animationDelay: '0s' }}>
-                    <div className="w-[1px] h-24 bg-tet-gold/50"></div>
-                    <OrnamentIcon />
-                </div>
-
-                {/* Dây 2 (Giữa - Dài hơn) */}
-                <div className="flex flex-col items-center h-56 animate-sway origin-top" style={{ animationDelay: '1s' }}>
-                    <div className="w-[1px] h-32 bg-tet-gold/50"></div>
+            {/* 2. Dây treo trang trí (2 bên) */}
+            <div className="absolute top-0 left-0 w-full h-1/3 flex justify-between px-6 md:px-20 opacity-70">
+                {/* Dây Trái */}
+                <div className="flex flex-col items-center h-48 animate-sway origin-top" style={{ animationDelay: '0s' }}>
+                    <div className="w-[1.5px] h-28 bg-gradient-to-b from-tet-gold/20 via-tet-gold/50 to-tet-gold"></div>
                     <OrnamentIconLarge />
                 </div>
 
-                {/* Dây 3 */}
-                <div className="hidden md:flex flex-col items-center h-40 animate-sway origin-top" style={{ animationDelay: '0.5s' }}>
-                    <div className="w-[1px] h-24 bg-tet-gold/50"></div>
-                    <OrnamentIcon />
+                {/* Dây Phải */}
+                <div className="flex flex-col items-center h-48 animate-sway origin-top" style={{ animationDelay: '0.8s' }}>
+                    <div className="w-[1.5px] h-28 bg-gradient-to-b from-tet-gold/20 via-tet-gold/50 to-tet-gold"></div>
+                    <OrnamentIconLarge />
                 </div>
             </div>
 
             {/* 3. Cây cối và Quà (Dưới lên) - Line Art */}
-            <div className="absolute bottom-6 md:bottom-10 left-0 w-full flex justify-between items-end px-4 md:px-20 opacity-40">
+            <div className="absolute bottom-6 md:bottom-10 left-0 w-full flex justify-between items-end px-4 md:px-24 opacity-60">
 
                 {/* Cụm trái: Cây to + Cây nhỏ + Quà */}
-                <div className="flex items-end gap-2 md:gap-4">
-                    <PineTree className="w-16 h-24 md:w-24 md:h-36 text-tet-gold" />
-                    <PineTree className="w-10 h-16 md:w-16 md:h-24 text-tet-gold -ml-4 md:-ml-8 mb-2" />
-                    <GiftBox className="w-8 h-8 md:w-12 md:h-12 text-tet-gold mb-1" />
+                <div className="flex items-end gap-1 md:gap-4 group">
+                    <PineTree className="w-20 h-32 md:w-32 md:h-48 text-tet-gold drop-shadow-[0_0_8px_rgba(255,215,0,0.2)]" />
+                    <PineTree className="w-12 h-20 md:w-20 md:h-32 text-tet-gold -ml-6 md:-ml-12 mb-2 opacity-80" />
+                    <GiftBox className="w-8 h-8 md:w-14 md:h-14 text-tet-gold mb-1" />
                 </div>
 
                 {/* Cụm phải: Cây to + Ly rượu */}
-                <div className="flex items-end gap-2 md:gap-4">
-                    <WineGlass className="hidden md:block w-8 h-12 text-tet-gold mb-2" />
-                    <GiftBox className="w-10 h-10 md:w-14 md:h-14 text-tet-gold mb-1" />
-                    <PineTree className="w-20 h-28 md:w-28 md:h-40 text-tet-gold" />
+                <div className="flex items-end gap-1 md:gap-4 group">
+                    <WineGlass className="hidden lg:block w-10 h-16 text-tet-gold mb-3 opacity-90" />
+                    <GiftBox className="w-10 h-10 md:w-16 md:h-16 text-tet-gold mb-1" />
+                    <PineTree className="w-24 h-36 md:w-40 md:h-56 text-tet-gold drop-shadow-[0_0_8px_rgba(255,215,0,0.2)]" />
                 </div>
             </div>
 
@@ -64,15 +58,6 @@ export const TetBackground: React.FC = () => {
 };
 
 // --- SVG Components ---
-
-const OrnamentIcon: React.FC = () => (
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="20" cy="20" r="18" stroke="#FCD34D" strokeWidth="1.5" />
-        <circle cx="20" cy="20" r="8" stroke="#FCD34D" strokeWidth="1" />
-        <path d="M20 2V38" stroke="#FCD34D" strokeWidth="0.5" />
-        <path d="M2 20H38" stroke="#FCD34D" strokeWidth="0.5" />
-    </svg>
-);
 
 const OrnamentIconLarge: React.FC = () => (
     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
