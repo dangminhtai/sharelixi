@@ -113,3 +113,17 @@
 - Tăng `z-index` lên cao (ví dụ `z-50`).
 - Kiểm tra lại thuộc tính `fixed` để đảm bảo không bị ảnh hưởng bởi layout cha.
 - Review lại responsive breakpoints.
+
+## 8. Lỗi Responsive & Layout ShareModal trên Mobile
+**Trạng thái**: 🟢 Resolved
+**Mức độ**: Cao (Ảnh hưởng đến thẩm mỹ và UX)
+
+### Mô tả vấn đề (Description)
+- Trên Mobile, khung "Chia sẻ lộc lá" bị đẩy xuống dưới cùng (`items-end`) thay vì nằm giữa màn hình (`items-center`) như trên Desktop.
+- Hiệu ứng Glassmorphism cảm giác "nằm dưới" hoặc bị lỗi hiển thị (có thể do thuộc tính `backdrop-blur` trên các trình duyệt mobile khác biệt).
+- Thiết kế không đồng nhất giữa Desktop và Mobile làm giảm trải nghiệm người dùng.
+
+### Giải pháp (Actions Taken)
+- Chuyển `items-end` thành `items-center` đồng nhất trên mọi thiết bị.
+- Đồng bộ `backdrop-blur-2xl` và `rounded-2xl` cho cả mobile và desktop.
+- Thêm padding `p-4` cố định cho overlay để tránh modal dính sát mép màn hình mobile.

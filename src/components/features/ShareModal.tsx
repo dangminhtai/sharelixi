@@ -93,10 +93,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, t
 
     return (
         <>
-            <div className="fixed inset-0 z-[110] flex items-end md:items-center justify-center p-0 md:p-4 animate-in fade-in duration-200">
+            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 animate-in fade-in duration-200">
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-xl" onClick={onClose}></div>
 
-                <div className="relative w-full max-w-sm bg-zinc-900/80 border border-white/20 md:rounded-2xl p-6 shadow-2xl transform transition-transform duration-300 slide-in-from-bottom-10 md:slide-in-from-bottom-0 backdrop-blur-2xl overflow-hidden">
+                <div className="relative w-full max-w-sm bg-zinc-900/80 border border-white/20 rounded-2xl p-6 shadow-2xl transform transition-transform duration-300 slide-in-from-bottom-10 md:slide-in-from-bottom-0 backdrop-blur-2xl overflow-hidden">
                     {/* Refraction effect overlay */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
                     <div className="flex justify-between items-center mb-6">
