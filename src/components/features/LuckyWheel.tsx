@@ -321,7 +321,7 @@ export const LuckyWheel: React.FC = () => {
 
                     {/* Vòng quay */}
                     <div
-                        className={`w-full h-full rounded-full border-[6px] border-tet-gold shadow-[0_0_30px_rgba(255,215,0,0.2)] relative overflow-hidden transition-transform cubic-bezier(0.25, 0.1, 0.25, 1) ${hasSpun ? 'opacity-80 grayscale-[30%]' : 'hover:scale-[1.02] duration-300'}`}
+                        className={`w-full h-full rounded-full border-[6px] border-tet-gold shadow-[0_0_30px_rgba(255,215,0,0.2)] relative overflow-hidden transition-transform cubic-bezier(0.25, 0.1, 0.25, 1) ${hasSpun ? '' : 'hover:scale-[1.02] duration-300'}`}
                         style={{
                             transform: `rotate(${rotation}deg)`,
                             transitionDuration: isSpinning ? '2500ms' : '300ms', // Nhanh hơn: 3s -> 2.5s
