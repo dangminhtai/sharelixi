@@ -88,3 +88,16 @@
 **Giải pháp**:
 - Chuyển `autoplay: true` cho BGM (trình duyệt có thể vẫn chặn nhưng sẽ thử).
 - Đảm bảo logic `unlockAudio` vẫn hoạt động để fallback.
+
+## 7. Bình luận nổi (Floating Comments) chưa hiển thị/không cố định
+**Trạng thái**: 🔴 Open
+**Mô tả**:
+- User report không thấy các sticker bình luận trên giao diện Web (Windows).
+- Yêu cầu: Bình luận phải **cố định (fixed)** trên màn hình, không trôi theo khi cuộn trang.
+**Nguyên nhân**:
+- Có thể do `z-index` (hiện tại `z-[5]`) thấp hơn các thành phần khác (`z-10` của main content).
+- Logic `hidden md:block` có thể đang ẩn trên một số kích thước màn hình.
+**Giải pháp**:
+- Tăng `z-index` lên cao (ví dụ `z-50`).
+- Kiểm tra lại thuộc tính `fixed` để đảm bảo không bị ảnh hưởng bởi layout cha.
+- Review lại responsive breakpoints.

@@ -226,7 +226,7 @@ export const LuckyWheel: React.FC = () => {
             finalValue = Math.floor(Math.random() * (30000 - 20000 + 1)) + 20000;
             finalValue = Math.floor(finalValue / 1000) * 1000;
             const randomWish = NEW_YEAR_WISHES[Math.floor(Math.random() * NEW_YEAR_WISHES.length)];
-            message = randomWish;
+            message = `🎉 CHÚC MỪNG NĂM MỚI! \n"${randomWish}"`; // Thêm prefix đặc biệt
         } else {
             finalValue = prize.value as number;
             message = "Lộc đầu xuân, cả năm may mắn!";
