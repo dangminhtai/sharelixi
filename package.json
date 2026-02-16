@@ -15,6 +15,7 @@
     "@types/howler": "^2.2.12",
     "canvas-confetti": "^1.9.4",
     "howler": "^2.2.4",
+    "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
     "js-confetti": "^0.13.1",
     "lucide-react": "^0.564.0",

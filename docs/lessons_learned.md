@@ -35,6 +35,27 @@ export const doSomething = () => {
   ai.run();
 }
 
+## 3. Thư viện tạo ảnh: html2canvas vs html-to-image
+
+**Triệu chứng:**
+- `html2canvas` đôi khi không load được font, lỗi layout hoặc ảnh bị mờ.
+- Khó quản lý khi load từ CDN (`window.html2canvas`).
+
+**Bài học:**
+- **Sử dụng `html-to-image`**: Thư viện này ổn định hơn, hỗ trợ tốt SVG và Tailwind CSS.
+- **Pixel Ratio**: Cấu hình `pixelRatio: 2` (hoặc cao hơn) giúp ảnh xuất ra sắc nét, không bị vỡ hạt trên màn hình độ phân giải cao.
+- **Async/Await**: Luôn dùng `await` và thêm một khoảng delay nhỏ (100ms) để đảm bảo DOM đã render hoàn thiện trước khi chụp.
+
+## 4. UI/UX: Toast vs Alert
+
+**Vấn đề:**
+- `window.alert()` làm ngưng trệ luồng xử lý của trình duyệt, giao diện thô cứng và không đồng bộ với thiết kế của App.
+
+**Cách làm tốt hơn:**
+- **Custom Toast**: Sử dụng component Toast riêng để thông báo (Copy thành công, Tải ảnh xong).
+- **Z-Index**: Đảm bảo Toast có `z-index` đủ cao (ví dụ: 200) để luôn nằm trên các Modal khác.
+- **Timeout**: Tự động đóng sau 3-5s để người dùng không cần thao tác tắt thủ công.
+
 ## 2. Commit đúng trên github
     Mỗi khi làm xong 1 tính năng thì nên commit và push lên github để tránh mất code
     Làm theo step sau:

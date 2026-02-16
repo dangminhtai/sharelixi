@@ -6,7 +6,7 @@ import confetti from 'canvas-confetti';
 import { HelpCircle, X, ChevronRight, Share2, CheckCircle2, Lock, Volume2, VolumeX } from 'lucide-react';
 import { SpinService } from '../../services/spinService';
 import { Howl, Howler } from 'howler';
-import { ShareModal } from '../ui/ShareModal';
+import { ShareModal } from './ShareModal';
 
 // Import sounds
 import bgmFile from '../../assets/sounds/bgm.mp3';
@@ -266,24 +266,6 @@ export const LuckyWheel: React.FC = () => {
         setShowShareModal(true);
     };
 
-    const handleDownloadImage = async () => {
-        if (resultRef.current) {
-            try {
-                const canvas = await html2canvas(resultRef.current, {
-                    backgroundColor: null, // Transparent background if possible, or use computed style
-                    scale: 2 // High resolution
-                });
-                const link = document.createElement('a');
-                link.download = `lixi-2026-${Date.now()}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            } catch (error) {
-                console.error("Failed to capture image:", error);
-                throw error; // Throw to let caller handle UI
-            }
-        }
-    };
-
     return (
         <Card className="w-full max-w-xl mx-auto overflow-hidden relative border-tet-gold/30 bg-black/40 backdrop-blur-xl pb-8">
             {/* Header nhỏ chứa tiêu đề và nút ? */}
@@ -416,6 +398,7 @@ export const LuckyWheel: React.FC = () => {
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowResultModal(false)}></div>
 
                     <div
+                        id="lucky-result-card"
                         ref={resultRef}
                         className="relative w-full max-w-md border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-md overflow-visible"
                         style={{
@@ -488,7 +471,7 @@ export const LuckyWheel: React.FC = () => {
                 isOpen={showShareModal}
                 onClose={() => setShowShareModal(false)}
                 data={shareData}
-                onDownloadImage={handleDownloadImage}
+                targetId="lucky-result-card"
             />
 
             {/* Modal Luật Chơi */}
