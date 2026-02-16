@@ -1,4 +1,5 @@
 import React from 'react';
+import { FloatingComments } from '@/components/layout/FloatingComments';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 
@@ -9,6 +10,7 @@ interface MainLayoutProps {
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
         <div className="min-h-screen flex flex-col relative overflow-x-hidden">
+            <FloatingComments />
             {/* Background Bubbles from Template */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-tet-red rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-pulse-slow"></div>

@@ -4,7 +4,6 @@ import { Countdown } from '@/components/features/Countdown';
 import { LuckyWheel } from '@/components/features/LuckyWheel';
 import { FallingPetals } from '@/components/effects/FallingPetals';
 import { MoneyRain } from '@/components/effects/MoneyRain';
-import { FloatingComments } from '@/components/layout/FloatingComments';
 import img2026 from '@/assets/images/2026.png';
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
 
   return (
     <>
-      <FloatingComments />
       <FallingPetals />
       <MoneyRain />
       <MainLayout>
