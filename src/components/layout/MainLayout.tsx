@@ -1,5 +1,5 @@
 import React from 'react';
-import { FloatingComments } from '@/components/layout/FloatingComments';
+import { FloatingComments } from '@/components/features/FloatingComments';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 
