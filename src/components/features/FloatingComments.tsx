@@ -20,7 +20,7 @@ export const FloatingComments: React.FC = () => {
     const [visibleComments, setVisibleComments] = useState<number[]>([]);
 
     useEffect(() => {
-        const timeouts: NodeJS.Timeout[] = [];
+        const timeouts: ReturnType<typeof setTimeout>[] = [];
 
         COMMENTS_DATA.forEach((comment) => {
             // Show comment after delay
