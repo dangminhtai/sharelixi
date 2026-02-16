@@ -121,6 +121,7 @@ export const LuckyWheel: React.FC = () => {
 
         setIsSpinning(true);
         setShowResultModal(false);
+        window.dispatchEvent(new CustomEvent('wheel-spin-start'));
 
         // Play Tick Sound Loop (Simulation with Deceleration)
         let tickTimeout: any = null;
@@ -183,6 +184,7 @@ export const LuckyWheel: React.FC = () => {
 
         setTimeout(async () => {
             setIsSpinning(false);
+            window.dispatchEvent(new CustomEvent('wheel-spin-end'));
             setHasSpun(true); // Đánh dấu đã quay rồi
 
             // Stop tick sound

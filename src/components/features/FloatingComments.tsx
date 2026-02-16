@@ -18,6 +18,20 @@ const COMMENTS_DATA: Comment[] = [
 
 export const FloatingComments: React.FC = () => {
     const [visibleComments, setVisibleComments] = useState<number[]>([]);
+    const [isSpinning, setIsSpinning] = useState(false);
+
+    useEffect(() => {
+        const handleStart = () => setIsSpinning(true);
+        const handleEnd = () => setIsSpinning(false);
+
+        window.addEventListener('wheel-spin-start', handleStart);
+        window.addEventListener('wheel-spin-end', handleEnd);
+
+        return () => {
+            window.removeEventListener('wheel-spin-start', handleStart);
+            window.removeEventListener('wheel-spin-end', handleEnd);
+        };
+    }, []);
 
     useEffect(() => {
         const timeouts: ReturnType<typeof setTimeout>[] = [];
@@ -25,12 +39,19 @@ export const FloatingComments: React.FC = () => {
         COMMENTS_DATA.forEach((comment) => {
             // Show comment after delay
             const showTimeout = setTimeout(() => {
-                setVisibleComments((prev) => [...prev, comment.id]);
+                setVisibleComments((prev) => {
+                    // Tối đa 2 comment cùng lúc, cái cũ nhất sẽ bị loại bỏ
+                    const next = [...prev, comment.id];
+                    if (next.length > 2) {
+                        return next.slice(-2);
+                    }
+                    return next;
+                });
 
-                // Auto hide after 10s
+                // Auto hide sau 8s
                 const hideTimeout = setTimeout(() => {
                     setVisibleComments((prev) => prev.filter(id => id !== comment.id));
-                }, 10000);
+                }, 8000);
                 timeouts.push(hideTimeout);
 
             }, comment.delay);
@@ -41,6 +62,8 @@ export const FloatingComments: React.FC = () => {
             timeouts.forEach((t) => clearTimeout(t));
         };
     }, []);
+
+    if (isSpinning) return null;
 
     return (
         <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-3 items-end pointer-events-none max-w-[300px]">
