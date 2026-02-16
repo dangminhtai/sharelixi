@@ -4,8 +4,8 @@ export const BackgroundEffects = () => {
     const [petals, setPetals] = useState<number[]>([]);
 
     useEffect(() => {
-        // Determine number of petals based on screen width/density
-        const petalCount = 30;
+        // Giảm số lượng cánh hoa xuống để bớt rối mắt khi có hiệu ứng khác
+        const petalCount = 12;
         const newPetals = Array.from({ length: petalCount }, (_, i) => i);
         setPetals(newPetals);
     }, []);

@@ -24,7 +24,7 @@ export const FallingPetals: React.FC = () => {
 
         let animationFrameId: number;
         let petals: Petal[] = [];
-        const PETAL_COUNT = 50;
+        const PETAL_COUNT = 20;
 
         const resizeCanvas = () => {
             canvas.width = window.innerWidth;

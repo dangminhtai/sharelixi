@@ -29,7 +29,7 @@ function App() {
       <MainLayout>
         <div className="text-center w-full max-w-4xl mx-auto z-10">
           <div className="mb-10 animate-fade-in-up">
-            <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight text-white drop-shadow-2xl font-tomorrow flex items-center justify-center gap-3 md:gap-4 flex-wrap">
+            <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight text-[#FFFED3] drop-shadow-2xl font-tomorrow flex items-center justify-center gap-3 md:gap-4 flex-wrap">
               <span>Tết Bính Ngọ</span>
               <img
                 src={img2026}

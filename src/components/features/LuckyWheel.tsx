@@ -272,7 +272,7 @@ export const LuckyWheel: React.FC = () => {
             <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
                 <div className="flex items-center gap-4">
                     <h3 className="text-xl font-bold text-tet-gold uppercase drop-shadow-md flex items-center gap-2">
-                        <span className="text-2xl">🎡</span> Vòng Quay 2026
+                        <span className="text-2xl">🎡</span> Vòng Quay May Mắn
                     </h3>
                     {/* Nút Mute/Unmute */}
                     <button
