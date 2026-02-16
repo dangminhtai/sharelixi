@@ -151,11 +151,24 @@ export const LuckyWheel: React.FC = () => {
 
         const selectedPrize = WHEEL_PRIZES[selectedIndex];
 
-        // 2. Tính toán góc quay
-        const baseRotation = 1800; // Quay ít nhất 5 vòng
-        const targetAngle = 360 - (selectedIndex * segmentAngle);
+        // 2. Tính toán góc quay (Fix logic)
+        const baseRotation = 1800; // Quay ít nhất 5 vòng (5 * 360)
+
+        // Góc cần đạt được để kim (0deg) chỉ vào giữa ô
+        // targetAngle là vị trí tuyệt đối trên vòng tròn (0-360)
+        const targetAngle = 360 - (selectedIndex * segmentAngle) - (segmentAngle / 2);
+
+        // Tính góc lệch cần quay thêm từ vị trí hiện tại
+        const currentRotationMod = rotation % 360;
+        let degreesNeeded = targetAngle - currentRotationMod;
+
+        // Đảm bảo quay theo chiều kim đồng hồ (dương)
+        if (degreesNeeded <= 0) {
+            degreesNeeded += 360;
+        }
+
         const randomOffset = Math.floor(Math.random() * 20) - 10;
-        const newRotation = rotation + baseRotation + targetAngle + randomOffset;
+        const newRotation = rotation + baseRotation + degreesNeeded + randomOffset;
 
         setRotation(newRotation);
 

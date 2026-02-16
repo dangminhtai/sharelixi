@@ -60,7 +60,13 @@
 **Mô tả**:
 - Deploy lên Vercel bị màn hình trắng/đỏ, không hiện UI.
 - Nguyên nhân: `createClient(url, key)` trong `supabase.ts` chạy ngay khi app load. Trên Vercel nếu quên set Environment Variables thì `url` và `key` là `undefined` -> Crash.
-**Khắc phục**:
-1. Vào Vercel > Settings > Environment Variables.
-2. Thêm `VITE_SUPABASE_URL` và `VITE_SUPABASE_ANON_KEY`.
 3. Sửa code `supabase.ts` để không crash nếu thiếu key (fail-safe).
+
+## 4. Kim chỉ không khớp với giá trị (Misalignment)
+**Trạng thái**: 🟢 Resolved
+**Mô tả**:
+- Khi vòng quay dừng, kim chỉ vào ranh giới giữa 2 ô hoặc lệch so với kết quả (ví dụ báo trúng 10k nhưng kim chỉ vào 20k).
+**Nguyên nhân**:
+- Công thức tính góc quay `targetAngle = 360 - (index * segmentAngle)` chỉ đưa kim về *đầu* của ô (start angle), chưa trừ đi nửa góc (`segmentAngle / 2`) để đưa về *tâm* ô.
+**Khắc phục**:
+- Sửa công thức: `targetAngle = 360 - (index * segmentAngle) - (segmentAngle / 2)`.
