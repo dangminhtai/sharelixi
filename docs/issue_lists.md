@@ -90,6 +90,19 @@
 - Đảm bảo logic `unlockAudio` vẫn hoạt động để fallback.
 
 ## 7. Bình luận nổi (Floating Comments) chưa hiển thị/không cố định
+**Trạng thái**: 🟡 In Progress
+**Mô tả**:
+- User report không thấy các sticker bình luận trên giao diện Web (Windows).
+- Yêu cầu: Bình luận phải **cố định (fixed)** trên màn hình, không trôi theo khi cuộn trang.
+**Nguyên nhân**:
+- Có thể do lỗi class dynamic của Tailwind (scanner không bắt được string trong object).
+- Z-index chưa đủ cao hoặc bị che bởi context stacking.
+**Giải pháp**:
+- Chuyển sang dùng Inline Styles cho vị trí (`top`, `left`, `right`, `bottom`) và `z-index`.
+- Force `z-index: 9999`.
+- Đơn giản hóa component.
+
+## 7. Bình luận nổi (Floating Comments) chưa hiển thị/không cố định
 **Trạng thái**: 🔴 Open
 **Mô tả**:
 - User report không thấy các sticker bình luận trên giao diện Web (Windows).
