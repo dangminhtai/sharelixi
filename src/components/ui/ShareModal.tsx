@@ -1,5 +1,6 @@
-import React from 'react';
-import { X, Facebook, Send, Link as LinkIcon, Download, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Facebook, Send, Link as LinkIcon, Download, Mail, Loader2 } from 'lucide-react';
+import html2canvas from 'html2canvas';
 
 interface ShareModalProps {
     isOpen: boolean;
@@ -7,12 +8,13 @@ interface ShareModalProps {
     data: {
         text: string;
         url: string;
-        imageBlob?: Blob | null;
     };
-    onDownloadImage: () => void;
+    targetId: string; // ID của element cần chụp ảnh
 }
 
-export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data }) => {
+export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, targetId }) => {
+    const [isCapturing, setIsCapturing] = useState(false);
+
     if (!isOpen) return null;
 
     const handleFacebookShare = () => {
@@ -21,9 +23,6 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data })
     };
 
     const handleMessengerShare = () => {
-        // Messenger usually requires the native app or specific dialogs that might be restricted on web.
-        // A common fallback is redirecting to messenger.com or using a deep link if on mobile.
-        // For web simplicity, we'll try the redirect or a prompt.
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
             window.location.href = `fb-messenger://share?link=${encodeURIComponent(data.url)}`;
@@ -33,12 +32,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data })
     };
 
     const handleZaloShare = () => {
-        // Zalo doesn't have a direct public web share API like FB. 
-        // Best approach: Copy to clipboard and open Zalo (or instruct user).
         navigator.clipboard.writeText(`${data.text} ${data.url}`);
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
-            window.location.href = "zalo://"; // Try to open Zalo app
+            window.location.href = "zalo://";
         } else {
             window.open("https://chat.zalo.me/", '_blank');
         }
@@ -46,7 +43,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data })
     };
 
     const handleEmailShare = () => {
-        const subject = "Khoe lì xì Tết 2026 nè!";
+        const subject = "Khoe lì xì Tết 2027 nè!";
         const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(data.text + "\n\n" + data.url)}`;
         window.location.href = mailtoUrl;
     };
@@ -54,6 +51,43 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data })
     const handleCopyLink = () => {
         navigator.clipboard.writeText(`${data.text} ${data.url}`);
         alert("Đã copy vào bộ nhớ tạm!");
+    };
+
+    const handleDownloadImage = async () => {
+        const element = document.getElementById(targetId);
+        if (!element) {
+            alert("Không tìm thấy ảnh để tải!");
+            return;
+        }
+
+        setIsCapturing(true);
+        try {
+            // Chờ một chút để đảm bảo DOM đã render xong (nếu vừa mở modal)
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const canvas = await html2canvas(element, {
+                useCORS: true, // Cho phép tải ảnh từ domain khác (nếu có texture)
+                scale: 2, // Tăng độ phân giải ảnh lên 2x cho nét
+                backgroundColor: null, // Giữ background trong suốt nếu có
+                logging: false
+            });
+
+            const image = canvas.toDataURL("image/png");
+
+            // Tạo link ảo để tải về
+            const link = document.createElement('a');
+            link.href = image;
+            link.download = `Li-Xi-Tet-2027-${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+        } catch (error) {
+            console.error("Lỗi khi chụp màn hình:", error);
+            alert("Không thể tạo ảnh, vui lòng thử chụp màn hình thủ công.");
+        } finally {
+            setIsCapturing(false);
+        }
     };
 
     return (
@@ -101,13 +135,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data })
                         <span className="text-xs text-gray-300">Email</span>
                     </button>
 
-                    {/* Download Image */}
-                    {/* Download Image */}
-                    <button onClick={() => alert("Tính năng đang được phát triển")} className="flex flex-col items-center gap-2 group">
+                    {/* Download Image - Đã Fix */}
+                    <button onClick={handleDownloadImage} disabled={isCapturing} className="flex flex-col items-center gap-2 group disabled:opacity-50">
                         <div className="w-12 h-12 rounded-full bg-yellow-600 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
-                            <Download className="w-5 h-5" />
+                            {isCapturing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
                         </div>
-                        <span className="text-xs text-gray-300">Tải Ảnh</span>
+                        <span className="text-xs text-gray-300">
+                            {isCapturing ? 'Đang tạo...' : 'Tải Ảnh'}
+                        </span>
                     </button>
 
                     {/* Copy Link */}
