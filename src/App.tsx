@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { Countdown } from '@/components/features/Countdown';
 import { LuckyWheel } from '@/components/features/LuckyWheel';
+import { FallingPetals } from '@/components/effects/FallingPetals';
 import img2026 from '@/assets/images/2026.png';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
 
   return (
     <MainLayout>
+      <FallingPetals />
       <div className="text-center w-full max-w-4xl mx-auto z-10">
         <div className="mb-10 animate-fade-in-up">
           <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight text-white drop-shadow-2xl font-tomorrow flex items-center justify-center gap-3 md:gap-4 flex-wrap">

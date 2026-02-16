@@ -52,3 +52,15 @@
 ### Giải pháp (Proposed Solution)
 - Cập nhật logic `spinWheel`: Check `isTestMode` trước, nếu `true` thì bỏ qua các check `hasSpun` và `isChecking`.
 - Cập nhật disable logic của button để cho phép click khi `isTestMode = true`.
+
+
+
+## 3. Lỗi Crash App trên Vercel do Supabase Env
+**Trạng thái**: 🔴 Critical
+**Mô tả**:
+- Deploy lên Vercel bị màn hình trắng/đỏ, không hiện UI.
+- Nguyên nhân: `createClient(url, key)` trong `supabase.ts` chạy ngay khi app load. Trên Vercel nếu quên set Environment Variables thì `url` và `key` là `undefined` -> Crash.
+**Khắc phục**:
+1. Vào Vercel > Settings > Environment Variables.
+2. Thêm `VITE_SUPABASE_URL` và `VITE_SUPABASE_ANON_KEY`.
+3. Sửa code `supabase.ts` để không crash nếu thiếu key (fail-safe).

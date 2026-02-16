@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '../ui/Card';
 import { WHEEL_PRIZES, NEW_YEAR_WISHES } from '../../utils/random';
 import type { SpinResult, WheelPrize } from '../../utils/random';
 import confetti from 'canvas-confetti';
-import { HelpCircle, X, ChevronRight, Share2, CheckCircle2, Lock } from 'lucide-react';
+import { HelpCircle, X, ChevronRight, Share2, CheckCircle2, Lock, Volume2, VolumeX } from 'lucide-react';
 import { SpinService } from '../../services/spinService';
+import { Howl, Howler } from 'howler';
+
+// Import sounds
+import bgmFile from '../../assets/sounds/bgm.mp3';
+import tickFile from '../../assets/sounds/wheel.mp3';
+import winFile from '../../assets/sounds/win.mp3';
 
 export const LuckyWheel: React.FC = () => {
     const [showRules, setShowRules] = useState(false);
@@ -15,6 +21,47 @@ export const LuckyWheel: React.FC = () => {
     const [result, setResult] = useState<SpinResult | null>(null);
     const [userIP, setUserIP] = useState<string | null>(null);
     const [isChecking, setIsChecking] = useState(true);
+
+    // Audio State
+    const [soundEnabled, setSoundEnabled] = useState(true);
+    const sounds = useRef<{ bgm: Howl; tick: Howl; win: Howl } | null>(null);
+
+    // Init Sounds
+    useEffect(() => {
+        sounds.current = {
+            bgm: new Howl({ src: [bgmFile], loop: true, volume: 0.3, autoplay: false }),
+            tick: new Howl({ src: [tickFile], volume: 0.5 }),
+            win: new Howl({ src: [winFile], volume: 0.8 }),
+        };
+
+        // Auto play bgm interaction
+        const unlockAudio = () => {
+            if (soundEnabled && sounds.current && !sounds.current.bgm.playing()) {
+                sounds.current.bgm.play();
+            }
+            document.removeEventListener('click', unlockAudio);
+        };
+        document.addEventListener('click', unlockAudio);
+
+        return () => { // Cleanup
+            sounds.current?.bgm.stop();
+        };
+    }, []);
+
+    // Toggle Sound
+    const toggleSound = () => {
+        const newState = !soundEnabled;
+        setSoundEnabled(newState);
+        if (sounds.current) {
+            if (newState) {
+                sounds.current.bgm.play();
+                Howler.mute(false);
+            } else {
+                sounds.current.bgm.pause();
+                Howler.mute(true);
+            }
+        }
+    };
 
     // 1. Check LocalStorage & IP khi load trang
     useEffect(() => {
@@ -69,6 +116,26 @@ export const LuckyWheel: React.FC = () => {
         setIsSpinning(true);
         setShowResultModal(false);
 
+        // Play Tick Sound Loop (Simulation with Deceleration)
+        let tickTimeout: any = null;
+
+        const playTick = (currentDelay: number) => {
+            if (soundEnabled && sounds.current) {
+                sounds.current.tick.play();
+
+                // Increase delay to simulate slowing down (Deceleration)
+                const nextDelay = currentDelay * 1.05;
+
+                if (nextDelay < 300) { // Stop if too slow
+                    tickTimeout = setTimeout(() => playTick(nextDelay), nextDelay);
+                }
+            }
+        };
+
+        if (soundEnabled) {
+            playTick(20); // Start fast (20ms)
+        }
+
         // 1. Tính toán giải thưởng dựa trên tỷ lệ
         const random = Math.random() * 100;
         let currentProb = 0;
@@ -93,9 +160,24 @@ export const LuckyWheel: React.FC = () => {
         setRotation(newRotation);
 
         // 3. Xử lý kết quả sau khi quay xong (3s)
+        const SPIN_DURATION = 2500; // 3000 -> 2500ms (Nhanh hơn)
+
         setTimeout(async () => {
             setIsSpinning(false);
             setHasSpun(true); // Đánh dấu đã quay rồi
+
+            // Stop tick sound
+            if (tickTimeout) clearTimeout(tickTimeout);
+            // Force stop any playing tick sound
+            if (sounds.current) {
+                sounds.current.tick.stop();
+            }
+
+            // Play Win Sound
+            if (soundEnabled && sounds.current) {
+                sounds.current.win.play();
+            }
+
             const finalResult = handleResult(selectedPrize);
 
             // 4. Lưu kết quả (Anti-Cheat) - Chỉ lưu nếu KHÔNG phải test mode
@@ -113,7 +195,7 @@ export const LuckyWheel: React.FC = () => {
                     });
                 }
             }
-        }, 3000);
+        }, SPIN_DURATION);
     };
 
     const handleResult = (prize: WheelPrize): SpinResult => {
@@ -176,9 +258,20 @@ export const LuckyWheel: React.FC = () => {
         <Card className="w-full max-w-xl mx-auto overflow-hidden relative border-tet-gold/30 bg-black/40 backdrop-blur-xl pb-8">
             {/* Header nhỏ chứa tiêu đề và nút ? */}
             <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                <h3 className="text-xl font-bold text-tet-gold uppercase drop-shadow-md flex items-center gap-2">
-                    <span className="text-2xl">🎡</span> Vòng Quay 2026
-                </h3>
+                <div className="flex items-center gap-4">
+                    <h3 className="text-xl font-bold text-tet-gold uppercase drop-shadow-md flex items-center gap-2">
+                        <span className="text-2xl">🎡</span> Vòng Quay 2026
+                    </h3>
+                    {/* Nút Mute/Unmute */}
+                    <button
+                        onClick={toggleSound}
+                        className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                        title={soundEnabled ? "Tắt âm thanh" : "Bật âm thanh"}
+                    >
+                        {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                    </button>
+                </div>
+
                 <button
                     onClick={() => setShowRules(true)}
                     className="flex items-center gap-1 text-sm text-gray-300 hover:text-white hover:bg-white/10 px-4 py-2 rounded-full transition-all border border-white/20 active:scale-95 touch-manipulation"
@@ -197,9 +290,10 @@ export const LuckyWheel: React.FC = () => {
 
                     {/* Vòng quay */}
                     <div
-                        className={`w-full h-full rounded-full border-[6px] border-tet-gold shadow-[0_0_30px_rgba(255,215,0,0.2)] relative overflow-hidden transition-transform duration-[3000ms] cubic-bezier(0.25, 0.1, 0.25, 1) ${hasSpun ? 'opacity-80 grayscale-[30%]' : 'hover:scale-[1.02] duration-300'}`}
+                        className={`w-full h-full rounded-full border-[6px] border-tet-gold shadow-[0_0_30px_rgba(255,215,0,0.2)] relative overflow-hidden transition-transform cubic-bezier(0.25, 0.1, 0.25, 1) ${hasSpun ? 'opacity-80 grayscale-[30%]' : 'hover:scale-[1.02] duration-300'}`}
                         style={{
                             transform: `rotate(${rotation}deg)`,
+                            transitionDuration: isSpinning ? '2500ms' : '300ms', // Nhanh hơn: 3s -> 2.5s
                             background: `conic-gradient(
                 ${WHEEL_PRIZES.map((p, i) => `${p.color} ${i * (100 / WHEEL_PRIZES.length)}% ${(i + 1) * (100 / WHEEL_PRIZES.length)}%`).join(', ')}
               )`

@@ -25,7 +25,13 @@ export const SpinService = {
 
     // 2. Kiểm tra xem IP/Device đã quay chưa
     async checkCanSpin(ip: string): Promise<boolean> {
-        if (!ip) return true; // Nếu không lấy được IP thì tạm thời cho qua (hoặc chặn)
+        if (!ip) return true;
+
+        // Nếu Supabase chưa init (do thiếu env vars), cho phép quay (Fail-open)
+        if (!supabase) {
+            console.warn("Supabase not configured, skipping IP check.");
+            return true;
+        }
 
         try {
             const { data, error } = await supabase
@@ -46,6 +52,11 @@ export const SpinService = {
 
     // 3. Lưu kết quả quay
     async saveSpinResult(record: SpinRecord): Promise<boolean> {
+        if (!supabase) {
+            console.warn("Supabase not configured, skipping save result.");
+            return false;
+        }
+
         try {
             const { error } = await supabase
                 .from('spin_history')
