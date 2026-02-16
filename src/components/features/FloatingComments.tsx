@@ -12,7 +12,7 @@ interface Comment {
 const COMMENTS_DATA: Comment[] = [
     { id: 1, emoji: '😆', text: 'Trang này dễ thương xỉu!', delay: 500 },
     { id: 2, emoji: '🧧', text: 'Đã lì xì lấy may nha', delay: 2500 },
-    { id: 3, emoji: '🚀', text: 'Hóng Tết 2027 quá đi', delay: 5500 },
+    { id: 3, emoji: '🚀', text: 'Hóng Tết 2026 quá đi', delay: 5500 },
     { id: 4, emoji: '⭐', text: 'Giao diện xịn sò quá ad ơi', delay: 9000 },
 ];
 

@@ -8,9 +8,19 @@ import img2026 from '@/assets/images/2026.png';
 
 function App() {
   // Tet 2026 (Year of the Horse) is on Feb 17, 2026
-  // Tet 2026 (Year of the Horse) is on Feb 17, 2026
-  const TET_2026 = '2026-02-17T00:00:00+07:00';
-  const [canSpin, setCanSpin] = useState(true); // Set to true for debug
+  const TET_START = '2026-02-17T00:00:00+07:00';
+
+  // Logic to determine if we can spin:
+  // 1. If 'test=1' param is present, always allow spin (Testing mode)
+  // 2. If current date >= TET_START, allow spin
+  // 3. Otherwise, show Countdown
+  const [canSpin, setCanSpin] = useState(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const isTestMode = searchParams.get('test') === '1';
+    const isTetStarted = new Date() >= new Date(TET_START);
+
+    return isTestMode || isTetStarted;
+  });
 
   return (
     <>
@@ -36,7 +46,7 @@ function App() {
 
           {!canSpin ? (
             <Countdown
-              targetDate={TET_2026}
+              targetDate={TET_START}
               onComplete={() => setCanSpin(true)}
             />
           ) : (
