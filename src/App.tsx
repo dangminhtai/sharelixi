@@ -52,7 +52,10 @@ function App() {
           )}
         </div>
       </MainLayout>
-      )
+    </>
+  )
 }
 
-      export default App
+export default App
+
+export default App
