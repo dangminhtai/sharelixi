@@ -6,7 +6,6 @@ import confetti from 'canvas-confetti';
 import { HelpCircle, X, ChevronRight, Share2, CheckCircle2, Lock, Volume2, VolumeX } from 'lucide-react';
 import { SpinService } from '../../services/spinService';
 import { Howl, Howler } from 'howler';
-import html2canvas from 'html2canvas';
 import { ShareModal } from '../ui/ShareModal';
 
 // Import sounds
@@ -267,6 +266,24 @@ export const LuckyWheel: React.FC = () => {
         setShowShareModal(true);
     };
 
+    const handleDownloadImage = async () => {
+        if (resultRef.current) {
+            try {
+                const canvas = await html2canvas(resultRef.current, {
+                    backgroundColor: null, // Transparent background if possible, or use computed style
+                    scale: 2 // High resolution
+                });
+                const link = document.createElement('a');
+                link.download = `lixi-2026-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch (error) {
+                console.error("Failed to capture image:", error);
+                throw error; // Throw to let caller handle UI
+            }
+        }
+    };
+
     return (
         <Card className="w-full max-w-xl mx-auto overflow-hidden relative border-tet-gold/30 bg-black/40 backdrop-blur-xl pb-8">
             {/* Header nhỏ chứa tiêu đề và nút ? */}
@@ -399,7 +416,6 @@ export const LuckyWheel: React.FC = () => {
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowResultModal(false)}></div>
 
                     <div
-                        id="lucky-result-card"
                         ref={resultRef}
                         className="relative w-full max-w-md border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-md overflow-visible"
                         style={{
@@ -415,15 +431,7 @@ export const LuckyWheel: React.FC = () => {
                         <div className="absolute -top-10 -left-10 text-6xl animate-bounce delay-100">🧨</div>
                         <div className="absolute -bottom-5 -right-5 text-6xl animate-bounce">🧧</div>
 
-                        <div className="bg-tet-red w-full h-full rounded-xl p-6 text-center relative z-10 overflow-hidden">
-                            {/* CSS Pattern to replace external image */}
-                            <div className="absolute inset-0 opacity-10"
-                                style={{
-                                    backgroundImage: 'radial-gradient(#FFD700 1px, transparent 1px)',
-                                    backgroundSize: '16px 16px'
-                                }}
-                            ></div>
-
+                        <div className="bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] bg-opacity-10 w-full h-full rounded-xl p-6 text-center relative z-10">
                             <button
                                 onClick={() => setShowResultModal(false)}
                                 className="absolute top-2 right-2 text-white/50 hover:text-white p-2"
@@ -476,12 +484,11 @@ export const LuckyWheel: React.FC = () => {
             )}
 
             {/* Share Modal */}
-            {/* Share Modal */}
             <ShareModal
                 isOpen={showShareModal}
                 onClose={() => setShowShareModal(false)}
                 data={shareData}
-                targetId="lucky-result-card"
+                onDownloadImage={handleDownloadImage}
             />
 
             {/* Modal Luật Chơi */}

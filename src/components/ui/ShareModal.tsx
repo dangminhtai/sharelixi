@@ -9,7 +9,7 @@ interface ShareModalProps {
         text: string;
         url: string;
     };
-    targetId: string; // ID của element cần chụp ảnh
+    targetId: string; // ID of the element to capture
 }
 
 export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, targetId }) => {
@@ -43,7 +43,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, t
     };
 
     const handleEmailShare = () => {
-        const subject = "Khoe lì xì Tết 2027 nè!";
+        const subject = "Khoe lì xì Tết 2026 nè!";
         const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(data.text + "\n\n" + data.url)}`;
         window.location.href = mailtoUrl;
     };
@@ -62,28 +62,28 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, t
 
         setIsCapturing(true);
         try {
-            // Chờ một chút để đảm bảo DOM đã render xong (nếu vừa mở modal)
-            await new Promise(resolve => setTimeout(resolve, 100));
+            // Wait a bit for DOM to be ready
+            await new Promise(resolve => setTimeout(resolve, 300));
 
             const canvas = await html2canvas(element, {
-                useCORS: true, // Cho phép tải ảnh từ domain khác (nếu có texture)
-                scale: 2, // Tăng độ phân giải ảnh lên 2x cho nét
-                backgroundColor: null, // Giữ background trong suốt nếu có
-                logging: false
+                useCORS: true,
+                scale: 2,
+                backgroundColor: null,
+                logging: false,
+                allowTaint: true
             });
 
             const image = canvas.toDataURL("image/png");
 
-            // Tạo link ảo để tải về
             const link = document.createElement('a');
             link.href = image;
-            link.download = `Li-Xi-Tet-2027-${Date.now()}.png`;
+            link.download = `Li-Xi-Tet-2026-${Date.now()}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
         } catch (error) {
-            console.error("Lỗi khi chụp màn hình:", error);
+            console.error("Capture Error:", error);
             alert("Không thể tạo ảnh, vui lòng thử chụp màn hình thủ công.");
         } finally {
             setIsCapturing(false);
@@ -135,8 +135,12 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, t
                         <span className="text-xs text-gray-300">Email</span>
                     </button>
 
-                    {/* Download Image - Đã Fix */}
-                    <button onClick={handleDownloadImage} disabled={isCapturing} className="flex flex-col items-center gap-2 group disabled:opacity-50">
+                    {/* Download Image */}
+                    <button
+                        onClick={handleDownloadImage}
+                        disabled={isCapturing}
+                        className="flex flex-col items-center gap-2 group disabled:opacity-50"
+                    >
                         <div className="w-12 h-12 rounded-full bg-yellow-600 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                             {isCapturing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
                         </div>
@@ -154,8 +158,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, data, t
                     </button>
                 </div>
 
-                <div className="mt-8 text-center">
-                    <p className="text-[10px] text-gray-500">
+                <div className="mt-8 text-center text-zinc-500">
+                    <p className="text-[10px]">
                         *Lì xì càng to, chia sẻ càng may mắn!
                     </p>
                 </div>
