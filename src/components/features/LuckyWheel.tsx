@@ -415,7 +415,15 @@ export const LuckyWheel: React.FC = () => {
                         <div className="absolute -top-10 -left-10 text-6xl animate-bounce delay-100">🧨</div>
                         <div className="absolute -bottom-5 -right-5 text-6xl animate-bounce">🧧</div>
 
-                        <div className="bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] bg-opacity-10 w-full h-full rounded-xl p-6 text-center relative z-10">
+                        <div className="bg-tet-red w-full h-full rounded-xl p-6 text-center relative z-10 overflow-hidden">
+                            {/* CSS Pattern to replace external image */}
+                            <div className="absolute inset-0 opacity-10"
+                                style={{
+                                    backgroundImage: 'radial-gradient(#FFD700 1px, transparent 1px)',
+                                    backgroundSize: '16px 16px'
+                                }}
+                            ></div>
+
                             <button
                                 onClick={() => setShowResultModal(false)}
                                 className="absolute top-2 right-2 text-white/50 hover:text-white p-2"
