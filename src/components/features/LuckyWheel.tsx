@@ -6,6 +6,8 @@ import confetti from 'canvas-confetti';
 import { HelpCircle, X, ChevronRight, Share2, CheckCircle2, Lock, Volume2, VolumeX } from 'lucide-react';
 import { SpinService } from '../../services/spinService';
 import { Howl, Howler } from 'howler';
+import html2canvas from 'html2canvas';
+import { ShareModal } from '../ui/ShareModal';
 
 // Import sounds
 import bgmFile from '../../assets/sounds/bgm.mp3';
@@ -21,6 +23,11 @@ export const LuckyWheel: React.FC = () => {
     const [result, setResult] = useState<SpinResult | null>(null);
     const [userIP, setUserIP] = useState<string | null>(null);
     const [isChecking, setIsChecking] = useState(true);
+
+    // Share Modal State
+    const [showShareModal, setShowShareModal] = useState(false);
+    const [shareData, setShareData] = useState({ text: '', url: '' });
+    const resultRef = useRef<HTMLDivElement>(null);
 
     // Audio State
     const [soundEnabled, setSoundEnabled] = useState(true);
@@ -251,19 +258,30 @@ export const LuckyWheel: React.FC = () => {
         return newResult;
     };
 
-    const handleShare = () => {
-        const shareData = {
-            title: 'Lì Xì Tết 2026',
+    const handleShareClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setShareData({
             text: `Tôi vừa nhận được lì xì ${result?.finalValue.toLocaleString('vi-VN')} VNĐ cho năm 2026! Đặt gạch ngay!`,
             url: window.location.href
-        };
+        });
+        setShowShareModal(true);
+    };
 
-        if (navigator.share) {
-            navigator.share(shareData).catch(console.error);
-        } else {
-            // Fallback copy to clipboard
-            navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-            alert('Đã copy nội dung khoe tiền vào bộ nhớ tạm!');
+    const handleDownloadImage = async () => {
+        if (resultRef.current) {
+            try {
+                const canvas = await html2canvas(resultRef.current, {
+                    backgroundColor: null, // Transparent background if possible, or use computed style
+                    scale: 2 // High resolution
+                });
+                const link = document.createElement('a');
+                link.download = `lixi-2026-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch (error) {
+                console.error("Failed to capture image:", error);
+                throw error; // Throw to let caller handle UI
+            }
         }
     };
 
@@ -398,7 +416,13 @@ export const LuckyWheel: React.FC = () => {
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in zoom-in duration-300">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowResultModal(false)}></div>
 
-                    <div className="relative w-full max-w-md bg-gradient-to-br from-red-600/90 to-tet-dark/90 border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-md overflow-visible">
+                    <div
+                        ref={resultRef}
+                        className="relative w-full max-w-md border-2 border-tet-gold rounded-2xl p-1 shadow-[0_0_50px_rgba(255,215,0,0.3)] backdrop-blur-md overflow-visible"
+                        style={{
+                            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(69, 10, 10, 0.95))' // Explicit RGBA for html2canvas compatibility
+                        }}
+                    >
 
                         {/* Trang trí background */}
                         <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -z-10"></div>
@@ -439,7 +463,7 @@ export const LuckyWheel: React.FC = () => {
 
                             <div className="grid grid-cols-2 gap-3 mt-6">
                                 <button
-                                    onClick={handleShare}
+                                    onClick={handleShareClick}
                                     className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition-transform active:scale-95"
                                 >
                                     <Share2 className="w-5 h-5" /> Khoe Ngay
@@ -459,6 +483,14 @@ export const LuckyWheel: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            {/* Share Modal */}
+            <ShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                data={shareData}
+                onDownloadImage={handleDownloadImage}
+            />
 
             {/* Modal Luật Chơi */}
             {/* Modal Luật Chơi */}

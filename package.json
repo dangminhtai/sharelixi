@@ -16,6 +16,7 @@
     "canvas-confetti": "^1.9.4",
     "howler": "^2.2.4",
     "html2canvas": "^1.4.1",
+    "js-confetti": "^0.13.1",
     "lucide-react": "^0.564.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

@@ -70,3 +70,12 @@
 - Công thức tính góc quay `targetAngle = 360 - (index * segmentAngle)` chỉ đưa kim về *đầu* của ô (start angle), chưa trừ đi nửa góc (`segmentAngle / 2`) để đưa về *tâm* ô.
 **Khắc phục**:
 - Sửa công thức: `targetAngle = 360 - (index * segmentAngle) - (segmentAngle / 2)`.
+
+## 5. html2canvas lỗi color function "oklab"
+**Trạng thái**: 🟡 In Progress
+**Mô tả**:
+- Khi tải ảnh kết quả, console báo lỗi: `Attempting to parse an unsupported color function "oklab"`.
+- Nguyên nhân: TailwindCSS v4 hoặc theme dùng hệ màu `oklab` (LCH) nhưng `html2canvas` chưa hỗ trợ.
+**Giải pháp tạm thời**:
+- Đã disable tính năng tải ảnh, thay bằng thông báo "Tính năng đang được phát triển" để tránh lỗi UX ngày Tết.
+- Sẽ nghiên cứu fix `html2canvas` sau.

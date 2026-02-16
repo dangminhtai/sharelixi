@@ -3,6 +3,7 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Countdown } from '@/components/features/Countdown';
 import { LuckyWheel } from '@/components/features/LuckyWheel';
 import { FallingPetals } from '@/components/effects/FallingPetals';
+import { MoneyRain } from '@/components/effects/MoneyRain';
 import img2026 from '@/assets/images/2026.png';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
   return (
     <MainLayout>
       <FallingPetals />
+      <MoneyRain />
       <div className="text-center w-full max-w-4xl mx-auto z-10">
         <div className="mb-10 animate-fade-in-up">
           <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight text-white drop-shadow-2xl font-tomorrow flex items-center justify-center gap-3 md:gap-4 flex-wrap">
@@ -25,7 +27,7 @@ function App() {
             />
           </h1>
           <p className="text-lg md:text-xl text-yellow-100 max-w-2xl mx-auto opacity-90 font-tomorrow">
-            Trang web nhận lì xì online uy tín nhất hệ mặt trời (vào năm 2026).
+            Trang web nhận lì xì online uy tín nhất hệ mặt trời.
             <br />
             Đừng để nước đến chân mới nhảy, hãy xí chỗ ngay hôm nay!
           </p>
