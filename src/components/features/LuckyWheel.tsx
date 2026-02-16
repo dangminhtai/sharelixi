@@ -36,7 +36,7 @@ export const LuckyWheel: React.FC = () => {
     // Init Sounds
     useEffect(() => {
         sounds.current = {
-            bgm: new Howl({ src: [bgmFile], loop: true, volume: 0.3, autoplay: false }),
+            bgm: new Howl({ src: [bgmFile], loop: true, volume: 0.3, autoplay: true }),
             tick: new Howl({ src: [tickFile], volume: 0.5 }),
             win: new Howl({ src: [winFile], volume: 0.8 }),
         };

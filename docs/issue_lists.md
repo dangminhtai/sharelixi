@@ -76,6 +76,15 @@
 **Mô tả**:
 - Khi tải ảnh kết quả, console báo lỗi: `Attempting to parse an unsupported color function "oklab"`.
 - Nguyên nhân: TailwindCSS v4 hoặc theme dùng hệ màu `oklab` (LCH) nhưng `html2canvas` chưa hỗ trợ.
-**Giải pháp tạm thời**:
 - Đã disable tính năng tải ảnh, thay bằng thông báo "Tính năng đang được phát triển" để tránh lỗi UX ngày Tết.
 - Sẽ nghiên cứu fix `html2canvas` sau.
+
+## 6. Âm thanh mặc định bị tắt (Default Sound Muted)
+**Trạng thái**: � Resolved
+**Mô tả**:
+- User report âm thanh không tự phát khi vào trang.
+**Nguyên nhân**:
+- Browser Autoplay Policy chặn tự phát âm thanh. Code hiện tại đang set `autoplay: false` và đợi click `document`.
+**Giải pháp**:
+- Chuyển `autoplay: true` cho BGM (trình duyệt có thể vẫn chặn nhưng sẽ thử).
+- Đảm bảo logic `unlockAudio` vẫn hoạt động để fallback.
