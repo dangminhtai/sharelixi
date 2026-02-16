@@ -2,6 +2,7 @@ import React from 'react';
 import { FloatingComments } from '@/components/features/FloatingComments';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { TetBackground } from '@/components/layout/TetBackground';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -10,6 +11,7 @@ interface MainLayoutProps {
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
         <div className="min-h-screen flex flex-col relative overflow-x-hidden">
+            <TetBackground />
             <FloatingComments />
             {/* Background Bubbles from Template */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
