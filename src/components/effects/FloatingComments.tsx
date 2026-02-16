@@ -1,34 +1,57 @@
 import React from 'react';
 
-const COMMENTS = [
-    { text: "Trang này dễ thương xỉu!", icon: "😆", top: '15%', left: '10%', rotate: '-rotate-2' },
-    { text: "Đã lì xì lấy may nha", icon: "🧧", top: '25%', right: '15%', rotate: 'rotate-3' },
-    { text: "Uy tín nhé, vừa nhận 10k", icon: "💸", bottom: '20%', left: '15%', rotate: '-rotate-3' },
-    { text: "Chơi vui là chính 🤣", icon: "✨", bottom: '30%', right: '10%', rotate: 'rotate-2' },
+interface CommentStyle {
+    text: string;
+    icon: string;
+    className: string; // Use Tailwind classes for positioning
+    rotate: string;
+}
+
+const COMMENTS: CommentStyle[] = [
+    {
+        text: "Trang này dễ thương xỉu!",
+        icon: "😆",
+        className: "bottom-[15%] left-[5%] md:bottom-[20%] md:left-[10%] lg:bottom-[25%] lg:left-[15%]",
+        rotate: '-rotate-2'
+    },
+    {
+        text: "Đã lì xì lấy may nha",
+        icon: "🧧",
+        className: "bottom-[20%] right-[5%] md:bottom-[30%] md:right-[15%] lg:bottom-[35%] lg:right-[20%]",
+        rotate: 'rotate-3'
+    },
+    {
+        text: "Uy tín nhé, vừa nhận 10k",
+        icon: "💸",
+        className: "bottom-[10%] left-[10%] md:bottom-[15%] md:left-[20%] lg:bottom-[15%] lg:left-[25%]",
+        rotate: '-rotate-6'
+    },
+    {
+        text: "Chơi vui là chính 🤣",
+        icon: "✨",
+        className: "bottom-[25%] right-[10%] md:bottom-[20%] md:right-[5%] lg:bottom-[15%] lg:right-[10%]",
+        rotate: 'rotate-6'
+    },
 ];
 
 export const FloatingComments: React.FC = () => {
     return (
         <div
             className="fixed inset-0 pointer-events-none overflow-hidden"
-            style={{ zIndex: 9999 }} // Force high z-index
+            style={{ zIndex: 9999 }}
         >
             {COMMENTS.map((comment, index) => (
                 <div
                     key={index}
-                    // Shape: Chat bubble style (rounded-2xl with sharp bottom-left)
                     className={`absolute bg-white/95 text-gray-800 px-4 py-2 md:px-6 md:py-3 
                     rounded-2xl rounded-bl-none shadow-[0_8px_30px_rgb(0,0,0,0.12)] 
                     flex items-center gap-2 md:gap-3 animate-float border border-white/50 backdrop-blur-sm 
-                    cursor-default select-none hover:scale-110 transition-transform duration-300 ${comment.rotate}`}
+                    cursor-default select-none hover:scale-110 transition-transform duration-300
+                    ${comment.rotate} ${comment.className}`}
                     style={{
-                        top: comment.top,
-                        left: comment.left,
-                        right: comment.right,
-                        bottom: comment.bottom,
-                        zIndex: 9999,
                         animationDelay: `${index * 1.5}s`,
                         animationDuration: '6s'
+                        // Removed inline top/left/bottom/right to rely on Tailwind classes
                     }}
                 >
                     <span className="text-xl md:text-3xl drop-shadow-sm filter">{comment.icon}</span>
