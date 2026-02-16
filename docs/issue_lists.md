@@ -89,18 +89,17 @@
 - Chuyển `autoplay: true` cho BGM (trình duyệt có thể vẫn chặn nhưng sẽ thử).
 - Đảm bảo logic `unlockAudio` vẫn hoạt động để fallback.
 
-## 7. Bình luận nổi (Floating Comments) chưa hiển thị/không cố định
-**Trạng thái**: 🟡 In Progress
+## 7. Bình luận nổi (Floating Comments) bị trôi khi cuộn trang
+**Trạng thái**: 🔴 Re-opened
 **Mô tả**:
-- User report không thấy các sticker bình luận trên giao diện Web (Windows).
-- Yêu cầu: Bình luận phải **cố định (fixed)** trên màn hình, không trôi theo khi cuộn trang.
+- User report: Khi cuộn trang, các comment di chuyển theo nội dung thay vì đứng yên (fixed).
+- Mặc dù đã dùng `position: fixed` và đưa ra ngoài `MainLayout`, vấn đề vẫn tồn tại trên Windows Desktop.
 **Nguyên nhân**:
-- Có thể do lỗi class dynamic của Tailwind (scanner không bắt được string trong object).
-- Z-index chưa đủ cao hoặc bị che bởi context stacking.
+- Có thể do container cha (`#root` hoặc `body`) vô tình tạo ra **Stacking Context** (do `filter`, `transform`, `perspective`... trong CSS toàn cục).
+- Khi đó `position: fixed` sẽ hoạt động như `absolute` so với container đó chứ không phải Viewport.
 **Giải pháp**:
-- Chuyển sang dùng Inline Styles cho vị trí (`top`, `left`, `right`, `bottom`) và `z-index`.
-- Force `z-index: 9999`.
-- Đơn giản hóa component.
+- Sử dụng **React Portal** (`createPortal`) để render component trực tiếp vào `document.body`, thoát khỏi hoàn toàn DOM tree của React App.
+- Đảm bảo `z-index` cao nhất.
 
 ## 7. Bình luận nổi (Floating Comments) chưa hiển thị/không cố định
 **Trạng thái**: 🔴 Open
